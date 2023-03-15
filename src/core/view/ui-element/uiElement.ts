@@ -1,10 +1,20 @@
-export abstract class UIElement {
+import { DisposableObject, IDisposableObject } from "../../shared/disposableObject.js";
+
+export interface IUIElement<TInnerElement extends HTMLElement | SVGElement = HTMLElement | SVGElement> extends IDisposableObject {
+    readonly innerElement: TInnerElement;
+    assertIsAncestorOf(otherElement: IUIElement): void;
+    isAncestorOf(otherElement: IUIElement): boolean;
+}
+
+export abstract class UIElement<TInnerElement extends HTMLElement | SVGElement = HTMLElement | SVGElement> extends DisposableObject implements IUIElement<TInnerElement> {
     /**
      * The inner DOM element that this UIElement wraps.
      */
-    public readonly innerElement: HTMLElement | SVGElement;
+    public readonly innerElement: TInnerElement;
 
-    public constructor(innerElement: HTMLElement | SVGElement, ...childNodes: UIElement[]) {
+    public constructor(innerElement: TInnerElement, ...childNodes: UIElement[]) {
+        super();
+        
         // Assert that the inner DOM element actually exists
         if (innerElement == undefined) {
             throw new Error('Supplied inner element is undefined.');
@@ -14,7 +24,7 @@ export abstract class UIElement {
         this.innerElement = innerElement;
 
         // Assert that all supplied child nodes are actually child nodes in the DOM
-        childNodes.forEach((childNode: UIElement) => {
+        childNodes.forEach((childNode: IUIElement) => {
             this.assertIsAncestorOf(childNode);
         });
     }
@@ -23,7 +33,7 @@ export abstract class UIElement {
      * Throws an error if this is not an ancestor of the supplied UIElement.
      * @param otherElement The UI element to check.
      */
-    public assertIsAncestorOf(otherElement: UIElement): void {
+    public assertIsAncestorOf(otherElement: IUIElement): void {
         // Simply throw an error if isAncestorOf returns false
         if (!this.isAncestorOf(otherElement)) {
             throw new Error('Supplied element is not a child of this element.');
@@ -35,7 +45,7 @@ export abstract class UIElement {
      * @param otherElement The UIElement to check.
      * @returns Whether this is an ancestor of the supplied UIElement
      */
-    public isAncestorOf(otherElement: UIElement): boolean {
+    public isAncestorOf(otherElement: IUIElement): boolean {
         // Iterate up the DOM heirachy by starting with the supplied UIElement's inner DOM element and getting the parent of each DOM element
         for (let elementToCheck = otherElement.innerElement.parentElement; elementToCheck != null; elementToCheck = elementToCheck!.parentElement) {
             // If the current element is this element's inner DOM element, then this element is an ancestor
@@ -46,5 +56,10 @@ export abstract class UIElement {
 
         // If we have traversed the DOM heirachy without finding this element's inner DOM element, then this element must not be an ancestor
         return false;
+    }
+
+    public dispose(): void {
+        this.innerElement.remove();
+        super.dispose();
     }
 }

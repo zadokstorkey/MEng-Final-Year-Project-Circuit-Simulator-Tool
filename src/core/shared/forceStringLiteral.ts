@@ -1,0 +1,1 @@
+export type ForcedStringLiteral<TStringLiteral> = string extends TStringLiteral ? never : string;

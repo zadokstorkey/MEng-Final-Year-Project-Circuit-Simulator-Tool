@@ -126,3 +126,13 @@ dist
 .yarn/cache
 .yarn/unplugged
 .yarn/build-st
+
+
+
+
+
+
+
+# Allow dist/index.html and dist/index.css for now, but still block the rest of dist
+!dist
+dist/**/

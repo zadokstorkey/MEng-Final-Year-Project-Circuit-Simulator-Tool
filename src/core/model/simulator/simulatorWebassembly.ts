@@ -1,5 +1,5 @@
 import { ISimulator } from "./simulatorInterface.js";
-import { default as innerInit, reset_simulation as innerResetSimulation, step_simulation as innerStepSimulation, get_ticks as innerGetTicks, get_time as innerGetTime, get_voltages as innerGetVoltages, get_currents as innerGetCurrents } from "../../../webassembly-simulator/pkg/webassembly_simulator.js";
+import { default as innerInit, resetSimulation as innerResetSimulation, stepSimulation as innerStepSimulation, getVoltages as innerGetVoltages, getCurrents as innerGetCurrents, getTime as innerGetTime, getTicks as innerGetTicks } from "../../../webassembly-simulator/pkg/webassembly_simulator.js";
 
 export class SimulatorWebAssembly implements ISimulator {
     public constructor() {
