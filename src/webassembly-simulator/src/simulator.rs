@@ -3,7 +3,7 @@ use std::sync::Mutex;
 use wasm_bindgen::prelude::*;
 
 const ARRAY_SIZE: usize = 1000;
-const TIMESTEP: f64 = 0.0000000005;
+const TIMESTEP: f64 = 0.000000001;
 const DISTANCESTEP_DOUBLED: f64 = 0.2;
 const TRANSMISSION_LINE_RESISTANCE_IN_OHMS: f64 = 75.0;
 const TRANSMISSION_LINE_CONDUCTANCE_IN_SIEMENS: f64 = 0.000001;

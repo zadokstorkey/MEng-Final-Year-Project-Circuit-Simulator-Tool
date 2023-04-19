@@ -33,11 +33,11 @@ async function run() {
     let svgLineGraph = new SVGLineGraph(svgLineGraphElment, numberArrayDataSource);
 
     // Start program (for now just test the simulators)
-    //runSimulation("Typescript Simulation", simulatorTypescript); // deliberately not awaited
-    runSimulation("WebAssembly Simulation", simulatorWebAssembly, numberArrayDataSource); // deliberately not awaited
+    runSimulation("Typescript Simulation", simulatorTypescript, numberArrayDataSource); // deliberately not awaited
+    //runSimulation("WebAssembly Simulation", simulatorWebAssembly, numberArrayDataSource); // deliberately not awaited
 }
 
-let maxVoltageMagnitude = 0
+let maxVoltageMagnitude = 1
 
 async function runSimulation(message: string, simulator: ISimulator, numberArrayDataSource: INumberArrayDataSource) {
     // Reset the simulation
@@ -64,6 +64,7 @@ async function runSimulation(message: string, simulator: ISimulator, numberArray
 
             numberArrayDataSource.setArrayData(normalisedVoltages);
 
+            return;
             await new Promise(r => setTimeout(r, 1)); 
         }
     }
