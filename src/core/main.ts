@@ -29,11 +29,11 @@ async function run() {
     let sidebarElement = document.getElementById('sidebar') as HTMLDivElement;
     let sidebar = new Sidebar(sidebarElement);
     let svgElement = document.getElementById('svgcanvas') as HTMLElement & SVGSVGElement;
-    let svgLineGraphElment = svgElement.getElementById('svgpolyline') as SVGPolylineElement;
-    let svgLineGraph = new SVGLineGraph(svgLineGraphElment, numberArrayDataSource);
+    /*let svgLineGraphElment = svgElement.getElementById('svgpolyline') as SVGPolylineElement;
+    let svgLineGraph = new SVGLineGraph(svgLineGraphElment, numberArrayDataSource);*/
 
     // Start program (for now just test the simulators)
-    runSimulation("Typescript Simulation", simulatorTypescript, numberArrayDataSource); // deliberately not awaited
+    //runSimulation("Typescript Simulation", simulatorTypescript, numberArrayDataSource); // deliberately not awaited
     //runSimulation("WebAssembly Simulation", simulatorWebAssembly, numberArrayDataSource); // deliberately not awaited
 }
 
