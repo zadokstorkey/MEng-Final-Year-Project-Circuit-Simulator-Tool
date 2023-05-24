@@ -9,12 +9,16 @@
     "build-typescript-simulator": "cd ./src/typescript-simulator && tsc",
     "build-webassembly-simulator": "cd ./src/webassembly-simulator && wasm-pack build --target web && cp ./pkg/webassembly_simulator_bg.wasm ../../dist/webassembly-simulator/pkg/webassembly_simulator_bg.wasm && cp ./pkg/webassembly_simulator.js ../../dist/webassembly-simulator/pkg/webassembly_simulator.js",
     "build-core": "cd ./src/core && tsc",
-    "serve": "http-server ./dist"
+    "serve": "http-server ./dist",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^29.5.1",
     "http-server": "^14.1.1",
+    "mathjs": "^11.8.0",
+    "ts-jest": "^29.1.0",
     "typescript": "^4.9.4"
   }
 }

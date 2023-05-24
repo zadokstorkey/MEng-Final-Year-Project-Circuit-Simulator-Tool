@@ -1,15 +1,21 @@
-import { NumberArrayDataSource } from "../../../viewmodel/data-source/numberArrayDataSource.js";
+import { INumberArrayDataSource, NumberArrayDataSource } from "../../../viewmodel/data-source/numberArrayDataSource.js";
 import { IUIElement, UIElement } from "../../ui-element/uiElement.js";
 
+/**
+ * Interface for a svg line graph element which updates when a data source changes.
+ */
 export interface ISVGLineGraph extends IUIElement<SVGPolylineElement> {
 
 }
 
+/**
+ * Class for a svg line graph element which updates when a data source changes.
+ */
 export class SVGLineGraph extends UIElement<SVGPolylineElement> implements ISVGLineGraph {
-    private _dataSource: NumberArrayDataSource;
+    private _dataSource: INumberArrayDataSource;
     private _dataSourceUpdatedEventHandler: () => void;
 
-    public constructor(innerElement: SVGPolylineElement, dataSource: NumberArrayDataSource) {
+    public constructor(innerElement: SVGPolylineElement, dataSource: INumberArrayDataSource) {
         super(innerElement);
         
         this._dataSource = dataSource;
@@ -27,7 +33,6 @@ export class SVGLineGraph extends UIElement<SVGPolylineElement> implements ISVGL
 
     private _handleDataSourceUpdated() {
         let arrayData = this._dataSource.getArrayData();
-        console.log(arrayData);
         let pointsString = arrayData.map((value: number, index: number) => (index / (arrayData.length - 1)).toString() + ' ' + (-value).toString()).join(', ');
         this.innerElement.setAttribute('points', pointsString);
     }

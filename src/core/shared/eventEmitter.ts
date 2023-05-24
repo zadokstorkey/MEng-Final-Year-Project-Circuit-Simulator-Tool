@@ -1,12 +1,18 @@
 import { IEventEmittingObject } from "./eventEmittingObject.js";
 import { ForcedStringLiteral } from "./forceStringLiteral.js";
 
+/**
+ * Interface intended to be used within objects that emit events to manage event handling and invocation.
+ */
 export interface IEventEmitter<TInvoker, TEventHandler extends (invoker: TInvoker, ...args: any[]) => void = (invoker: TInvoker) => void> {
     addEventListener(eventHandler: TEventHandler): void;
     removeEventListener(eventHandler: TEventHandler): void;
     invokeEvent(...params: Parameters<TEventHandler>): void;
 }
 
+/**
+ * Class intended to be used within objects that emit events to manage event handling and invocation.
+ */
 export class EventEmitter<TInvoker, TEventHandler extends (invoker: TInvoker, ...args: any[]) => void = (invoker: TInvoker) => void> implements IEventEmitter<TInvoker, TEventHandler> {
     private _eventHandlers: (TEventHandler)[] = [];
 

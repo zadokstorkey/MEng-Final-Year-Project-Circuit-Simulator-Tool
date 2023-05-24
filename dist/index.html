@@ -26,13 +26,10 @@
       <div id="top-menu-item-edit-label" class="top-menu-item-label">Edit</div>
       <div id="file-sub-menu" class="sub-menu">
         <div class="sub-menu-item">
-          <div class="sub-menu-item-label">Item1</div>
+          <div class="sub-menu-item-label">Undo</div>
         </div>
         <div class="sub-menu-item">
-          <div class="sub-menu-item-label">Item2</div>
-        </div>
-        <div class="sub-menu-item">
-          <div class="sub-menu-item-label">Item3</div>
+          <div class="sub-menu-item-label">Redo</div>
         </div>
       </div>
     </div>
@@ -95,66 +92,398 @@
   </div>
   <div id="non-top-menu-content">
     <div id="sidebar">
-
+      <div id="circuit-layout-dropdown" style="padding: 5px 10px; background-color: lightgray;">Layout</div>
+      <div id="circuit-layout-selection" style="width: 100%; margin: 10px 0;">
+        <div style="width: 100%; padding-top: 50%; position: relative; border-width: 1px">
+          <div id="basic-circuit-layout-preview-container" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0">
+            <svg id="basic-circuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative">
+              <g id="basic-circuit-layout-preview" class="circuit-layout">
+                <g class="transmissionline-component-preview" transform="scale(0.3, 0.8) translate(1.1, -0.25)">
+                  <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                  <rect x="0" y="-1" width="1" height="1" class="svg-graph-box-preview"></rect>
+                  <line x1="0" y1="0.5" x2="1" y2="0.5" class="svg-transmission-line-wire-preview"></line>
+                  <line x1="0" y1="-0.5" x2="1" y2="-0.5" class="svg-transmission-line-wire-preview"></line>
+                </g>
+                <g class="component-group-preview" transform="scale(0.3, 0.8) translate(0.1, -0.25)">
+                  <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box-preview"></rect>
+                  <line x1="0.2" y1="-0.5" x2="1" y2="-0.5" class="svg-wire-preview"></line>
+                  <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire-preview"></line>
+                  <g>
+                    <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse-preview"></ellipse>
+                    <line x1="0.12" y1="-0.08" x2="0.2" y2="0.12" class="svg-generic-line-preview"></line>
+                    <line x1="0.28" y1="-0.08" x2="0.2" y2="0.12" class="svg-generic-line-preview"></line>
+                  </g>
+                  <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire-preview"></line>
+                  <g>
+                    <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line-preview"></line>
+                    <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line-preview"></line>
+                    <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line-preview"></line>
+                  </g>
+                </g>
+                <g class="component-group-preview" transform="scale(0.3, 0.8) translate(0.1, -0.25)">
+                  <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box-preview"></rect>
+                  <line x1="0.8" y1="0.5" x2="1" y2="0.5" class="svg-wire-preview"></line>
+                  <line x1="0.8" y1="0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                  <g>
+                    <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                    <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                    <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                  </g>
+                </g>
+                <g class="component-group-preview" transform="scale(0.3, 0.8) translate(2.1, -0.25)">
+                  <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                  <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire-preview"></line>
+                  <rect x="0.25" y="-0.6" width="0.4" height="0.2" class="svg-resistor-preview"></rect>
+                  <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire-preview"></line>
+                  <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                  <g>
+                    <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                    <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                    <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                  </g>
+                </g>
+                <g class="component-group-preview" transform="scale(0.3, 0.8) translate(2.1, -0.25)">
+                  <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                  <line x1="0.2" y1="0.5" x2="0" y2="0.5" class="svg-wire-preview"></line>
+                  <line x1="0.2" y1="0.5" x2="0.2" y2="0.7" class="svg-wire-preview"></line>
+                  <g>
+                    <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line-preview"></line>
+                    <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line-preview"></line>
+                    <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line-preview"></line>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="driving-subcircuit-layout-dropdown" style="padding: 5px 10px; background-color: lightgray;">Driving Subcircuit</div>
+      <div id="driving-subcircuit-layout-selection" style="width: 100%; margin: 10px 0">
+        <div style="width: 100%; padding-top: 50%; position: relative">
+          <div id="step-driving-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 0; bottom: 0; right: 50%">
+            <svg id="step-driving-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.75" y1="-0.5" x2="1" y2="-0.5" class="svg-wire-preview"></line>
+                <rect x="0.35" y="-0.6" width="0.4" height="0.2" class="svg-resistor-preview"></rect>
+                <line x1="0.2" y1="-0.5" x2="0.35" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire-preview"></line>
+                <g>
+                  <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse-preview"></ellipse>
+                  <line x1="0.12" y1="0.10" x2="0.16" y2="0.10" class="svg-generic-line-preview"></line>
+                  <line x1="0.16" y1="0.10" x2="0.16" y2="-0.10" class="svg-generic-line-preview"></line>
+                  <line x1="0.16" y1="-0.10" x2="0.28" y2="-0.10" class="svg-generic-line-preview"></line>
+                </g>
+                <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div id="pulse-driving-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 50%; bottom: 0; right: 0">
+            <svg id="pulse-driving-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.75" y1="-0.5" x2="1" y2="-0.5" class="svg-wire-preview"></line>
+                <rect x="0.35" y="-0.6" width="0.4" height="0.2" class="svg-resistor-preview"></rect>
+                <line x1="0.2" y1="-0.5" x2="0.35" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire-preview"></line>
+                <g>
+                  <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse-preview"></ellipse>
+                  <line x1="0.12" y1="0.10" x2="0.16" y2="0.10" class="svg-generic-line-preview"></line>
+                  <line x1="0.16" y1="0.10" x2="0.16" y2="-0.10" class="svg-generic-line-preview"></line>
+                  <line x1="0.16" y1="-0.10" x2="0.20" y2="-0.10" class="svg-generic-line-preview"></line>
+                  <line x1="0.20" y1="0.10" x2="0.20" y2="-0.10" class="svg-generic-line-preview"></line>
+                  <line x1="0.20" y1="0.10" x2="0.28" y2="0.10" class="svg-generic-line-preview"></line>
+                </g>
+                <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div style="width: 100%; padding-top: 50%; position: relative">
+          <div id="sine-driving-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 0; bottom: 0; right: 50%">
+            <svg id="sine-driving-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.75" y1="-0.5" x2="1" y2="-0.5" class="svg-wire-preview"></line>
+                <rect x="0.35" y="-0.6" width="0.4" height="0.2" class="svg-resistor-preview"></rect>
+                <line x1="0.2" y1="-0.5" x2="0.35" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire-preview"></line>
+                <g>
+                  <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse-preview"></ellipse>
+                  <path d="M 0.12 0.00 S 0.16 -0.08, 0.20 0.00, 0.23 0.04, 0.28 0.00" style="fill: none; stroke-width: 1.2; stroke:black; vector-effect: non-scaling-stroke"></path>
+                </g>
+                <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="driving-subcircuit-layout-dropdown" style="padding: 5px 10px; background-color: lightgray;">Terminating Subcircuit</div>
+      <div id="driving-subcircuit-layout-selection" style="width: 100%; margin: 10px 0">
+        <div style="width: 100%; padding-top: 50%; position: relative">
+          <div id="open-circuit-terminating-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 0; bottom: 0; right: 50%">
+            <svg id="open-circuit-terminating-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div id="closed-circuit-terminating-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 50%; bottom: 0; right: 0">
+            <svg id="closed-circuit-terminating-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.8" y1="-0.5" x2="0" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div style="width: 100%; padding-top: 50%; position: relative">
+          <div id="resistor-terminating-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 0; bottom: 0; right: 50%">
+            <svg id="resistor-terminating-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire-preview"></line>
+                <rect x="0.25" y="-0.6" width="0.4" height="0.2" class="svg-resistor-preview"></rect>
+                <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div id="capacitor-terminating-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 50%; bottom: 0; right: 0">
+            <svg id="capacitor-terminating-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.40" y1="-0.5" x2="0" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.40" y1="-0.65" x2="0.40" y2="-0.35" class="svg-wire-preview"></line>
+                <line x1="0.50" y1="-0.65" x2="0.50" y2="-0.35" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.50" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div style="width: 100%; padding-top: 50%; position: relative">
+          <div id="inductor-terminating-subcircuit-layout-preview-container" style="position: absolute; top: 0; left: 0; bottom: 0; right: 50%">
+            <svg id="inductor-terminating-subcircuit-layout-preview-svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none" style="width:100%; height: 100%; position: relative; background-color: var(--step-driving-subcircuit-layout-select-button-colour)">
+              <g class="component-group-preview" transform="scale(0.7, 1) translate(0.1, -0.15)">
+                <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box-preview"></rect>
+                <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire-preview"></line>
+                <path d="M 0.25 -0.5 A 0.05 0.08 0 0 1 0.35 -0.5 A 0.05 0.08 0 0 1 0.45 -0.5 A 0.05 0.08 0 0 1 0.55 -0.5 A 0.05 0.08 0 0 1 0.65 -0.5" style="fill: none; stroke-width: 1.2; stroke:black; vector-effect: non-scaling-stroke"></path>
+                <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire-preview"></line>
+                <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire-preview"></line>
+                <g>
+                  <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line-preview"></line>
+                  <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line-preview"></line>
+                  <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line-preview"></line>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="simulator">
       <svg id="svgcanvas" viewBox="0 -1 1 2" preserveAspectRatio="none">
-        <g class="basic-circuit">
-          <g class="transmissionline-component" transform="scale(0.6, 0.4) translate(0.3, -1)">
-            <rect x="0" y="-1" width="1" height="2" stroke="transparent" fill="transparent" stroke-width="1" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0" y1="0.5" x2="1" y2="0.5" stroke="lightgray" stroke-width="10" vector-effect="non-scaling-stroke"></line>
-            <line x1="0" y1="-0.5" x2="1" y2="-0.5" stroke="lightgray" stroke-width="10" vector-effect="non-scaling-stroke"></line>
+        <g id="basic-circuit-layout" class="circuit-layout">
+          <g id="transmission-line" transform="scale(0.6, 0.45) translate(0.3, -0.75)">
+            <title></title>
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+            <rect x="0" y="-1" width="1" height="1" class="svg-graph-box"></rect>
+            <line x1="0" y1="0.5" x2="1" y2="0.5" class="svg-transmission-line-wire"></line>
+            <line x1="0" y1="-0.5" x2="1" y2="-0.5" class="svg-transmission-line-wire"></line>
+            <polyline id="voltage-distance-line-graph" style="fill: none; stroke-width: 0.9; stroke:black; vector-effect: non-scaling-stroke" transform="scale(1, 0.5) translate(0, -1)"/>
+            <!--<polyline id="current-distance-line-graph" style="fill: none; stroke-width: 0.9; stroke:black; vector-effect: non-scaling-stroke" transform="scale(1, 0.5) translate(0, -1)"/>-->
           </g>
-          <g class="component-group" transform="scale(0.15, 0.4) translate(0.2, -1)">
-            <rect x="0" y="-1" width="1" height="2" stroke="transparent" fill="transparent" stroke-width="1" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0.75" y1="-0.5" x2="1" y2="-0.5" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <rect x="0.35" y="-0.6" width="0.4" height="0.2" stroke="black" fill="transparent" stroke-width="3" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0.2" y1="-0.5" x2="0.35" y2="-0.5" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+          <g transform="scale(0.15, 0.45) translate(0.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box"></rect>
+            <line x1="0.8" y1="0.5" x2="1" y2="0.5" class="svg-wire"></line>
+            <line x1="0.8" y1="0.5" x2="0.8" y2="0.7" class="svg-wire"></line>
             <g>
-              <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" stroke="black" fill="transparent" stroke-width="3" vector-effect="non-scaling-stroke"></ellipse>
-              <line x1="0.12" y1="-0.08" x2="0.2" y2="0.12" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.28" y1="-0.08" x2="0.2" y2="0.12" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            </g>
-            <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <g>
-              <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line"></line>
             </g>
           </g>
-          <g class="component-group" transform="scale(0.15, 0.4) translate(0.2, -1)">
-            <rect x="0" y="-1" width="1" height="2" stroke="transparent" fill="transparent" stroke-width="1" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0.8" y1="0.5" x2="1" y2="0.5" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <line x1="0.8" y1="0.5" x2="0.8" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+          <g id="step-driving-subcircuit" transform="scale(0.15, 0.45) translate(0.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box"></rect>
+            <line x1="0.2" y1="-0.5" x2="1" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire"></line>
+            <g id="step-voltage-source">
+              <title></title>
+              <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse"></ellipse>
+              <line x1="0.12" y1="0.10" x2="0.16" y2="0.10" class="svg-generic-line"></line>
+              <line x1="0.16" y1="0.10" x2="0.16" y2="-0.10" class="svg-generic-line"></line>
+              <line x1="0.16" y1="-0.10" x2="0.28" y2="-0.10" class="svg-generic-line"></line>
+            </g>
+            <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire"></line>
             <g>
-              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+              <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line"></line>
             </g>
           </g>
-          <g class="component-group" transform="scale(0.15, 0.4) translate(5.2, -1)">
-            <rect x="0" y="-1" width="1" height="2" stroke="transparent" fill="transparent" stroke-width="1" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <rect x="0.25" y="-0.6" width="0.4" height="0.2" stroke="black" fill="transparent" stroke-width="3" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+          <g id="pulse-driving-subcircuit" transform="scale(0.15, 0.45) translate(0.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box"></rect>
+            <line x1="0.2" y1="-0.5" x2="1" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire"></line>
+            <g id="pulse-voltage-source">
+              <title></title>
+              <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse"></ellipse>
+              <line x1="0.12" y1="0.10" x2="0.16" y2="0.10" class="svg-generic-line"></line>
+              <line x1="0.16" y1="0.10" x2="0.16" y2="-0.10" class="svg-generic-line"></line>
+              <line x1="0.16" y1="-0.10" x2="0.20" y2="-0.10" class="svg-generic-line"></line>
+              <line x1="0.20" y1="0.10" x2="0.20" y2="-0.10" class="svg-generic-line"></line>
+              <line x1="0.20" y1="0.10" x2="0.28" y2="0.10" class="svg-generic-line"></line>
+            </g>
+            <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire"></line>
             <g>
-              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+              <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line"></line>
             </g>
           </g>
-          <g class="component-group" transform="scale(0.15, 0.4) translate(5.2, -1)">
-            <rect x="0" y="-1" width="1" height="2" stroke="transparent" fill="transparent" stroke-width="1" vector-effect="non-scaling-stroke"></rect>
-            <line x1="0.2" y1="0.5" x2="0" y2="0.5" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-            <line x1="0.2" y1="0.5" x2="0.2" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+          <g id="sine-driving-subcircuit" transform="scale(0.15, 0.45) translate(0.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2"class="svg-hidden-debug-box"></rect>
+            <line x1="0.2" y1="-0.5" x2="1" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.2" y1="-0.5" x2="0.2" y2="-0.2" class="svg-wire"></line>
+            <g id="sine-voltage-source">
+              <title></title>
+              <ellipse cx="0.2" cy="0" rx="0.15" ry="0.2" class="svg-generic-ellipse"></ellipse>
+              <path d="M 0.12 0.00 S 0.16 -0.08, 0.20 0.00, 0.23 0.04, 0.28 0.00" style="fill: none; stroke-width: 3; stroke:black; vector-effect: non-scaling-stroke"></path>
+            </g>
+            <line x1="0.2" y1="0.2" x2="0.2" y2="0.7" class="svg-wire"></line>
             <g>
-              <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
-              <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" stroke="black" stroke-width="3" vector-effect="non-scaling-stroke"></line>
+              <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line"></line>
             </g>
           </g>
+          <g transform="scale(0.15, 0.45) translate(5.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+            <line x1="0.2" y1="0.5" x2="0" y2="0.5" class="svg-wire"></line>
+            <line x1="0.2" y1="0.5" x2="0.2" y2="0.7" class="svg-wire"></line>
+            <g>
+              <line x1="0.125" y1="0.7" x2="0.275" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.15" y1="0.75" x2="0.25" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.175" y1="0.8" x2="0.225" y2="0.8" class="svg-generic-line"></line>
+            </g>
+          </g>
+          <g id="open-circuit-terminating-subcircuit" transform="scale(0.15, 0.45) translate(5.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+            <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire"></line>
+            <g id="open-circuit">
+              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line"></line>
+            </g>
+          </g>
+          <g id="closed-circuit-terminating-subcircuit" transform="scale(0.15, 0.45) translate(5.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+            <line x1="0.8" y1="-0.5" x2="0" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire"></line>
+            <g id="closed-circuit">
+              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line"></line>
+            </g>
+          </g>
+          <g id="resistor-terminating-subcircuit" transform="scale(0.15, 0.45) translate(5.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+            <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire"></line>
+            <g id="resistor">
+              <title></title>
+              <rect x="0.25" y="-0.6" width="0.4" height="0.2" class="svg-resistor"></rect>
+            </g>
+            <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire"></line>
+            <g>
+              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line"></line>
+            </g>
+          </g>
+          <g id="capacitor-terminating-subcircuit" transform="scale(0.15, 0.45) translate(5.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+            <line x1="0.40" y1="-0.5" x2="0" y2="-0.5" class="svg-wire"></line>
+            <g id="capacitor">
+              <title></title>
+              <line x1="0.40" y1="-0.65" x2="0.40" y2="-0.35" class="svg-wire"></line>
+              <line x1="0.50" y1="-0.65" x2="0.50" y2="-0.35" class="svg-wire"></line>
+            </g>
+            <line x1="0.8" y1="-0.5" x2="0.50" y2="-0.5" class="svg-wire"></line>
+            <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire"></line>
+            <g>
+              <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line"></line>
+              <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line"></line>
+              <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line"></line>
+            </g>
+          </g>
+          <g id="inductor-terminating-subcircuit" transform="scale(0.15, 0.45) translate(5.2, -0.75)">
+            <rect x="0" y="-1" width="1" height="2" class="svg-hidden-debug-box"></rect>
+                <line x1="0.25" y1="-0.5" x2="0" y2="-0.5" class="svg-wire"></line>
+                <g id="inductor">
+                  <title></title>
+                  <path d="M 0.25 -0.5 A 0.05 0.08 0 0 1 0.35 -0.5 A 0.05 0.08 0 0 1 0.45 -0.5 A 0.05 0.08 0 0 1 0.55 -0.5 A 0.05 0.08 0 0 1 0.65 -0.5" style="fill: none; stroke-width: 3; stroke:black; vector-effect: non-scaling-stroke"></path>
+                </g>
+                <line x1="0.8" y1="-0.5" x2="0.65" y2="-0.5" class="svg-wire"></line>
+                <line x1="0.8" y1="-0.5" x2="0.8" y2="0.7" class="svg-wire"></line>
+                <g>
+                  <line x1="0.725" y1="0.7" x2="0.875" y2="0.7" class="svg-generic-line"></line>
+                  <line x1="0.75" y1="0.75" x2="0.85" y2="0.75" class="svg-generic-line"></line>
+                  <line x1="0.775" y1="0.8" x2="0.825" y2="0.8" class="svg-generic-line"></line>
+                </g>
+          </g>
+        </g>
+        <g transform="scale(0.4, 0.4) translate(0.2, 1.5)">
+          <rect x="0" y="-1" width="1" height="2" class="svg-graph-box"></rect>
+          <polyline id="voltage-time-line-graph-1" style="fill: none; stroke-width: 0.9; stroke:black; vector-effect: non-scaling-stroke"/>
+          <!--<polyline id="current-time-line-graph-1" style="fill: none; stroke-width: 0.9; stroke:black; vector-effect: non-scaling-stroke"/>-->
+        </g>
+        <g transform="scale(0.4, 0.4) translate(1.2, 1.5)">
+          <rect x="0" y="-1" width="1" height="2" class="svg-graph-box"></rect>
+          <polyline id="voltage-time-line-graph-2" style="fill: none; stroke-width: 0.9; stroke:black; vector-effect: non-scaling-stroke"/>
+          <!--<polyline id="current-time-line-graph-2" style="fill: none; stroke-width: 0.9; stroke:black; vector-effect: non-scaling-stroke"/>-->
         </g>
       </svg>
     </div>

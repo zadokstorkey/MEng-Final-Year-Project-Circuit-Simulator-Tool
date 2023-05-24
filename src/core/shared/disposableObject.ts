@@ -1,8 +1,14 @@
+/**
+ * Interface for objects with disposal steps. Mostly used in this program for objects which need to remove event handlers before deletion.
+ */
 export interface IDisposableObject {
     dispose(): void;
 }
 
-export class DisposableObject implements IDisposableObject {
+/**
+ * Abstract class for objects with disposal steps. Mostly used in this program for objects which need to remove event handlers before deletion.
+ */
+export abstract class DisposableObject implements IDisposableObject {
     protected _disposed: boolean = false;
 
     public dispose(): void {

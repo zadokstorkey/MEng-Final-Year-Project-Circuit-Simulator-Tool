@@ -1,11 +1,17 @@
 import { DisposableObject, IDisposableObject } from "../../shared/disposableObject.js";
 
+/**
+ * Base ui element interface. Wraps an HTML or SVG element.
+ */
 export interface IUIElement<TInnerElement extends HTMLElement | SVGElement = HTMLElement | SVGElement> extends IDisposableObject {
     readonly innerElement: TInnerElement;
     assertIsAncestorOf(otherElement: IUIElement): void;
     isAncestorOf(otherElement: IUIElement): boolean;
 }
 
+/**
+ * Base ui element abstract class. Wraps an HTML or SVG element.
+ */
 export abstract class UIElement<TInnerElement extends HTMLElement | SVGElement = HTMLElement | SVGElement> extends DisposableObject implements IUIElement<TInnerElement> {
     /**
      * The inner DOM element that this UIElement wraps.

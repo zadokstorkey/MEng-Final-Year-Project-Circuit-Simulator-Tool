@@ -1,9 +1,15 @@
-import { IUIElement, UIElement } from "../ui-element/uiElement.js";
+import { IUIElement, UIElement } from "../../ui-element/uiElement.js";
 
+/**
+ * Interface for a button.
+ */
 export interface IButton extends IUIElement<HTMLDivElement> {
 
 }
 
+/**
+ * Abstract class for a button. Click handling is left to the subclass.
+ */
 export abstract class Button extends UIElement<HTMLDivElement> implements IButton {
     private _clickEventHandler: () => void;
 
