@@ -9,6 +9,11 @@
  type ISourceType = "step" | "pulse" | "sine";
  
  /**
+  * 
+  */
+ type IStartTerminationType = "closed circuit" | "resistor" | "capacitor" | "inductor";
+ 
+ /**
   * 1 = Open Circuit, 2 = Closed Circuit, 3 = Resistor, 4 = Capacitor, 5 = Inductor
   */
  type ITerminationType = "open circuit" | "closed circuit" | "resistor" | "capacitor" | "inductor";
@@ -26,7 +31,8 @@
      * Configures the simulator with a number of settings.
      * @param simulationType The type of simulation
      * @param sourceType The type of source
-     * @param terminationType The type of termination
+     * @param startTerminationType The type of termination at the start of the transmission line
+     * @param endTerminationType The type of termination at the end of the transmission line
      * @param timestep How much time a single step reperesents
      * @param transmissionLineSegments The number of individual positions calculated
      * @param transmissionLineResistance The total impedence of the transmission line (not the per unit impedence)
@@ -40,7 +46,7 @@
      * @param terminatingCapacitance The capacitance of the terminating capacitor (only has an effect if there is a terminating capacitor)
      * @param terminatingInductance The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
      */
-    configureSimulator(simulationType: ISimulationType, sourceType: ISourceType, terminationType: ITerminationType, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, terminatingResistance: number, terminatingCapacitance: number, terminatingInductance: number): void;
+    configureSimulator(simulationType: ISimulationType, sourceType: ISourceType, startTerminationType: IStartTerminationType, endTerminationType: ITerminationType, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, terminatingResistance: number, terminatingCapacitance: number, terminatingInductance: number): void;
 
     /**
      * Resets the voltages, currents and current tick to zero.

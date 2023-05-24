@@ -3,6 +3,7 @@ import { INotifyOnUpdate, NotifyOnUpdate } from "../../shared/notifyOnUpdate.js"
 
 export type ICircuitLayoutChoice = 'basic';
 export type IDrivingSubcircuitLayoutChoice = 'step' | 'pulse' | 'sine';
+export type IStartTerminatingSubcircuitLayoutChoice = 'closed circuit' | 'resistor' | 'capacitor' | 'inductor';
 export type ITerminatingSubcircuitLayoutChoice = 'open circuit' | 'closed circuit' | 'resistor' | 'capacitor' | 'inductor';
 
 /**
@@ -13,6 +14,8 @@ export interface ISimulatorSettingsViewModel extends INotifyOnUpdate {
     setCircuitLayoutChoice(value: ICircuitLayoutChoice): void;
     getDrivingSubcircuitLayoutChoice(): IDrivingSubcircuitLayoutChoice;
     setDrivingSubcircuitLayoutChoice(value: IDrivingSubcircuitLayoutChoice): void;
+    getStartTerminatingSubcircuitLayoutChoice(): IStartTerminatingSubcircuitLayoutChoice;
+    setStartTerminatingSubcircuitLayoutChoice(value: IStartTerminatingSubcircuitLayoutChoice): void;
     getTerminatingSubcircuitLayoutChoice(): ITerminatingSubcircuitLayoutChoice;
     setTerminatingSubcircuitLayoutChoice(value: ITerminatingSubcircuitLayoutChoice): void;
     getTransmissionLineSegments(): number;
@@ -46,6 +49,7 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
     private _simulator: ISimulator;
     private _circuitLayoutChoice: ICircuitLayoutChoice;
     private _drivingSubcircuitLayoutChoice: IDrivingSubcircuitLayoutChoice;
+    private _startTerminatingSubcircuitLayoutChoice: IStartTerminatingSubcircuitLayoutChoice;
     private _terminatingSubcircuitLayoutChoice: ITerminatingSubcircuitLayoutChoice;
     private _timestep: number;
     private _transmissionLineSegments: number;
@@ -60,11 +64,12 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
     private _terminatingCapacitance: number;
     private _terminatingInductance: number;
 
-    public constructor(simulator: ISimulator, circuitLayoutChoice: ICircuitLayoutChoice, drivingSubcircuitLayoutChoice: IDrivingSubcircuitLayoutChoice, terminatingSubcircuitLayoutChoice: ITerminatingSubcircuitLayoutChoice, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, terminatingResistance: number, terminatingInductance: number, terminatingCapacitance: number) {
+    public constructor(simulator: ISimulator, circuitLayoutChoice: ICircuitLayoutChoice, drivingSubcircuitLayoutChoice: IDrivingSubcircuitLayoutChoice, startTerminatingSubcircuitLayoutChoice: IStartTerminatingSubcircuitLayoutChoice, terminatingSubcircuitLayoutChoice: ITerminatingSubcircuitLayoutChoice, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, terminatingResistance: number, terminatingInductance: number, terminatingCapacitance: number) {
         super();
         this._simulator = simulator;
         this._circuitLayoutChoice = circuitLayoutChoice;
         this._drivingSubcircuitLayoutChoice = drivingSubcircuitLayoutChoice;
+        this._startTerminatingSubcircuitLayoutChoice = startTerminatingSubcircuitLayoutChoice;
         this._terminatingSubcircuitLayoutChoice = terminatingSubcircuitLayoutChoice;
         this._timestep = timestep;
         this._transmissionLineSegments = transmissionLineSegments;
@@ -97,6 +102,16 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
 
     public setDrivingSubcircuitLayoutChoice(value: IDrivingSubcircuitLayoutChoice): void {
         this._drivingSubcircuitLayoutChoice = value;
+        this._invokeUpdated();
+        this._updateSimulator();
+    }
+    
+    public getStartTerminatingSubcircuitLayoutChoice(): IStartTerminatingSubcircuitLayoutChoice {
+        return this._startTerminatingSubcircuitLayoutChoice;
+    }
+
+    public setStartTerminatingSubcircuitLayoutChoice(value: IStartTerminatingSubcircuitLayoutChoice): void {
+        this._startTerminatingSubcircuitLayoutChoice = value;
         this._invokeUpdated();
         this._updateSimulator();
     }
@@ -222,6 +237,6 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
     }
 
     private _updateSimulator() {
-        this._simulator.configureSimulator(this._circuitLayoutChoice, this._drivingSubcircuitLayoutChoice, this._terminatingSubcircuitLayoutChoice, this._timestep, this._transmissionLineSegments, this._transmissionLineResistance, this._transmissionLineConductance, this._transmissionLineInductance, this._transmissionLineCapacitance, this._voltageSourceVoltage, this._voltageSourcePeriod, this._voltageSourcePulseLength, this._terminatingResistance, this._terminatingCapacitance, this._terminatingInductance);
+        this._simulator.configureSimulator(this._circuitLayoutChoice, this._drivingSubcircuitLayoutChoice, this._startTerminatingSubcircuitLayoutChoice, this._terminatingSubcircuitLayoutChoice, this._timestep, this._transmissionLineSegments, this._transmissionLineResistance, this._transmissionLineConductance, this._transmissionLineInductance, this._transmissionLineCapacitance, this._voltageSourceVoltage, this._voltageSourcePeriod, this._voltageSourcePulseLength, this._terminatingResistance, this._terminatingCapacitance, this._terminatingInductance);
     }
 }

@@ -16,6 +16,8 @@ import { SVGResistorComponent } from "./view/svg/svg-circuit-component/resistorC
 import { SVGCapacitorComponent } from "./view/svg/svg-circuit-component/capacitorComponent.js";
 import { SVGInductorComponent } from "./view/svg/svg-circuit-component/inductorComponent.js";
 import { SVGTransmissionLineComponent } from "./view/svg/svg-circuit-component/transmissionLineComponent.js";
+import { SelectStartTerminatingSubcircuitLayoutButton } from "./view/buttons/specific/circuit-layout/selectStartTerminatingSubCircuitLayoutButton.js";
+import { SVGStartTerminatingSubcircuit } from "./view/svg/svg-start-terminating-subcircuit/svgStartTerminatingSubcircuit.js";
 
 /**
  * This is the main entrypoint into the application. It does a couple of things:
@@ -33,7 +35,7 @@ async function run() {
     //let simulator = new WebAssemblySimulator();
 
     // Constructor Injection Root - ViewModel - Settings
-    let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0005, 0.0001, 50, 0.0001, 0.000001);
+    let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "closed circuit", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0005, 0.0001, 50, 0.0001, 0.001);
     
     // Constructor Injection Root - ViewModel - Data Sources
     let numberArrayDataSourceVoltageSpace = new NumberArrayDataSource(Array.from(new Array(1000)).map(v => 0));
@@ -80,6 +82,14 @@ async function run() {
     let selectPulseDrivingSubcircuitLayoutSidebarButton = new SelectDrivingSubcircuitLayoutButton(selectPulseDrivingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'pulse', '--pulse-driving-subcircuit-visible', ['1', '0']);
     let selectSineDrivingSubcircuitLayoutSidebarButtonElement = document.getElementById('sine-driving-subcircuit-layout-preview-container') as HTMLDivElement;
     let selectSineDrivingSubcircuitLayoutSidebarButton = new SelectDrivingSubcircuitLayoutButton(selectSineDrivingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'sine', '--sine-driving-subcircuit-visible', ['1', '0']);
+    let selectClosedCircuitStartTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('closed-circuit-start-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectClosedCircuitStartTerminatingSubcircuitLayoutSidebarButton = new SelectStartTerminatingSubcircuitLayoutButton(selectClosedCircuitStartTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'closed circuit', '--closed-circuit-start-terminating-subcircuit-visible', ['1', '0']);
+    let selectResistorStartTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('resistor-start-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectResistorStartTerminatingSubcircuitLayoutSidebarButton = new SelectStartTerminatingSubcircuitLayoutButton(selectResistorStartTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'resistor', '--resistor-start-terminating-subcircuit-visible', ['1', '0']);
+    //let selectCapacitorStartTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('capacitor-start-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    //let selectCapacitorStartTerminatingSubcircuitLayoutSidebarButton = new SelectStartTerminatingSubcircuitLayoutButton(selectCapacitorStartTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'capacitor', '--capacitor-start-terminating-subcircuit-visible', ['1', '0']);
+    let selectInductorStartTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('inductor-start-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectInductorStartTerminatingSubcircuitLayoutSidebarButton = new SelectStartTerminatingSubcircuitLayoutButton(selectInductorStartTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'inductor', '--inductor-start-terminating-subcircuit-visible', ['1', '0']);
     let selectOpenCircuitTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('open-circuit-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
     let selectOpenCircuitTerminatingSubcircuitLayoutSidebarButton = new SelectTerminatingSubcircuitLayoutButton(selectOpenCircuitTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'open circuit', '--open-circuit-terminating-subcircuit-visible', ['1', '0']);
     let selectClosedCircuitTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('closed-circuit-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
@@ -98,6 +108,14 @@ async function run() {
     let svgPulseDrivingSubCircuit = new SVGDrivingSubcircuit(svgPulseDrivingSubCircuitElement, 'pulse', simulatorSettingsViewModel);
     let svgSineDrivingSubCircuitElement = document.getElementById('sine-driving-subcircuit') as any as SVGGElement;
     let svgSineDrivingSubCircuit = new SVGDrivingSubcircuit(svgSineDrivingSubCircuitElement, 'sine', simulatorSettingsViewModel);
+    let closedCircuitStartTerminatingSubCircuitElement = document.getElementById('closed-circuit-start-terminating-subcircuit') as any as SVGGElement;
+    let closedCircuitStartTerminatingSubCircuit = new SVGStartTerminatingSubcircuit(closedCircuitStartTerminatingSubCircuitElement, 'closed circuit', simulatorSettingsViewModel);
+    let resistorStartTerminatingSubCircuitElement = document.getElementById('resistor-start-terminating-subcircuit') as any as SVGGElement;
+    let resistorStartTerminatingSubCircuit = new SVGStartTerminatingSubcircuit(resistorStartTerminatingSubCircuitElement, 'resistor', simulatorSettingsViewModel);
+    let capacitorStartTerminatingSubCircuitElement = document.getElementById('capacitor-start-terminating-subcircuit') as any as SVGGElement;
+    let capacitorStartTerminatingSubCircuit = new SVGStartTerminatingSubcircuit(capacitorStartTerminatingSubCircuitElement, 'capacitor', simulatorSettingsViewModel);
+    let inductorStartTerminatingSubCircuitElement = document.getElementById('inductor-start-terminating-subcircuit') as any as SVGGElement;
+    let inductorStartTerminatingSubCircuit = new SVGStartTerminatingSubcircuit(inductorStartTerminatingSubCircuitElement, 'inductor', simulatorSettingsViewModel);
     let openCircuitTerminatingSubCircuitElement = document.getElementById('open-circuit-terminating-subcircuit') as any as SVGGElement;
     let openCircuitTerminatingSubCircuit = new SVGTerminatingSubcircuit(openCircuitTerminatingSubCircuitElement, 'open circuit', simulatorSettingsViewModel);
     let closedCircuitTerminatingSubCircuitElement = document.getElementById('closed-circuit-terminating-subcircuit') as any as SVGGElement;
@@ -116,12 +134,18 @@ async function run() {
     let svgSineVoltageSourceComponent = new SVGSineVoltageSourceComponent(svgSineVoltageSourceComponentElement, simulatorSettingsViewModel);
     let svgPulseVoltageSourceComponentElement = document.getElementById('pulse-voltage-source') as any as SVGGElement;
     let svgPulseVoltageSourceComponent = new SVGPulseVoltageSourceComponent(svgPulseVoltageSourceComponentElement, simulatorSettingsViewModel);
-    let svgResistorComponentElement = document.getElementById('resistor') as any as SVGGElement;
-    let svgResistorComponent = new SVGResistorComponent(svgResistorComponentElement, simulatorSettingsViewModel);
-    let svgCapacitorComponentElement = document.getElementById('capacitor') as any as SVGGElement;
-    let svgCapacitorComponent = new SVGCapacitorComponent(svgCapacitorComponentElement, simulatorSettingsViewModel);
-    let svgInductorComponentElement = document.getElementById('inductor') as any as SVGGElement;
-    let svgInductorComponent = new SVGInductorComponent(svgInductorComponentElement, simulatorSettingsViewModel);
+    let svgStartResistorComponentElement = document.getElementById('start-resistor') as any as SVGGElement;
+    let svgStartResistorComponent = new SVGResistorComponent(svgStartResistorComponentElement, simulatorSettingsViewModel);
+    let svgStartCapacitorComponentElement = document.getElementById('start-capacitor') as any as SVGGElement;
+    let svgStartCapacitorComponent = new SVGCapacitorComponent(svgStartCapacitorComponentElement, simulatorSettingsViewModel);
+    let svgStartInductorComponentElement = document.getElementById('start-inductor') as any as SVGGElement;
+    let svgStartInductorComponent = new SVGInductorComponent(svgStartInductorComponentElement, simulatorSettingsViewModel);
+    let svgEndResistorComponentElement = document.getElementById('end-resistor') as any as SVGGElement;
+    let svgEndResistorComponent = new SVGResistorComponent(svgEndResistorComponentElement, simulatorSettingsViewModel);
+    let svgEndCapacitorComponentElement = document.getElementById('end-capacitor') as any as SVGGElement;
+    let svgEndCapacitorComponent = new SVGCapacitorComponent(svgEndCapacitorComponentElement, simulatorSettingsViewModel);
+    let svgEndInductorComponentElement = document.getElementById('end-inductor') as any as SVGGElement;
+    let svgEndInductorComponent = new SVGInductorComponent(svgEndInductorComponentElement, simulatorSettingsViewModel);
     let svgTransmissionLineComponentElement = document.getElementById('transmission-line') as any as SVGGElement;
     let svgTransmissionLineComponent = new SVGTransmissionLineComponent(svgTransmissionLineComponentElement, simulatorSettingsViewModel);
 

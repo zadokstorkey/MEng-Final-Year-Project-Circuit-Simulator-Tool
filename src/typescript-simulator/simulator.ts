@@ -9,9 +9,14 @@ type ISimulationTypeNumber = 1;
 type ISourceTypeNumber = 1 | 2 | 3;
 
 /**
+ * 1 = Closed Circuit, 2 = Resistor, 3 = Capacitor, 4 = Inductor
+ */
+type IStartTerminationTypeNumber = 1 | 2 | 3 | 4;
+
+/**
  * 1 = Open Circuit, 2 = Closed Circuit, 3 = Resistor, 4 = Capacitor, 5 = Inductor
  */
-type ITerminationTypeNumber = 1 | 2 | 3 | 4 | 5;
+ type ITerminationTypeNumber = 1 | 2 | 3 | 4 | 5;
 
 /**
  * Has the simulation been configured yet
@@ -23,6 +28,7 @@ let simulationConfigured: boolean = false;
  */
 let simulationType: ISimulationTypeNumber;
 let sourceType: ISourceTypeNumber;
+let startTerminationType: IStartTerminationTypeNumber;
 let terminationType: ITerminationTypeNumber;
 let timestep: number;
 let transmissionLineSegments: number;
@@ -52,7 +58,8 @@ let currents: number[] = [];
  * Configure the simulator
  * @param simulationTypeValue The type of simulation (1 = Basic)
  * @param sourceTypeValue The type of source (1 = Step Voltage Source, 2 = Pulse Voltage Source, 3 = Sine Voltage Source)
- * @param terminationTypeValue The type of termination (1 = Open Circuit, 2 = Closed Circuit, 3 = Sine)
+ * @param startTerminationTypeValue The type of termination at the start of the transmission line (1 = Open Circuit, 2 = Closed Circuit, 3 = Resistor, 4 = Capacitor, 5 = Inductor)
+ * @param endTerminationTypeValue The type of termination at the end of the transmission line (1 = Closed Circuit, 2 = Resistor, 3 = Capacitor, 4 = Inductor)
  * @param timestepValue How much time a single step reperesents
  * @param transmissionLineResistanceValue The total impedence of the transmission line (not the per unit impedence)
  * @param transmissionLineConductanceValue The total conductance of the transmission line (not the per unit conductance)
@@ -66,10 +73,12 @@ let currents: number[] = [];
  * @param terminatingCapacitanceValue The capacitance of the terminating capacitor (only has an effect if there is a terminating capacitor)
  * @param terminatingInductanceValue The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
  */
-export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, sourceTypeValue: ISourceTypeNumber, terminationTypeValue: ITerminationTypeNumber, timestepValue: number, transmissionLineSegmentsValue: number, transmissionLineResistanceValue: number, transmissionLineConductanceValue: number, transmissionLineInductanceValue: number, transmissionLineCapacitanceValue: number, voltageSourceVoltageValue: number, voltageSourcePeriodValue: number, voltageSourcePulseLengthValue: number, terminatingResistanceValue: number, terminatingCapacitanceValue: number, terminatingInductanceValue: number) {
+export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, sourceTypeValue: ISourceTypeNumber, startTerminationTypeValue: IStartTerminationTypeNumber, endTerminationTypeValue: ITerminationTypeNumber, timestepValue: number, transmissionLineSegmentsValue: number, transmissionLineResistanceValue: number, transmissionLineConductanceValue: number, transmissionLineInductanceValue: number, transmissionLineCapacitanceValue: number, voltageSourceVoltageValue: number, voltageSourcePeriodValue: number, voltageSourcePulseLengthValue: number, terminatingResistanceValue: number, terminatingCapacitanceValue: number, terminatingInductanceValue: number) {
     simulationType = simulationTypeValue;
     sourceType = sourceTypeValue;
-    terminationType = terminationTypeValue;
+    console.log("start termination number:", startTerminationTypeValue, "end termination number:", endTerminationTypeValue);
+    startTerminationType = startTerminationTypeValue;
+    terminationType = endTerminationTypeValue;
     timestep = timestepValue;
     transmissionLineSegments = transmissionLineSegmentsValue;
     voltageSourceVoltage = voltageSourceVoltageValue;
@@ -117,17 +126,21 @@ export function stepSimulation() {
     }
 
     // Handle voltage boundary conditions
-    if (sourceType == 1) {
-        // Step Voltage Source
-        voltages[0] = voltageSourceVoltage!;
-    } else if (sourceType == 2) {
-        // Pulse Voltage Source
-        voltages[0] = ((currentTick * timestep) % voltageSourcePeriod!) < voltageSourcePulseLength! ? voltageSourceVoltage! : 0;
-    } else if (sourceType == 3) {
-        // Sinosoidal Voltage Source
-        voltages[0] = voltageSourceVoltage * Math.sin((currentTick * timestep) / voltageSourcePeriod! * Math.PI);
+    if (startTerminationType == 1) {
+        // Closed Circuit Start Termination
+        voltages[0] = getDrivingSubcircuitVoltage();
+    } else if (startTerminationType == 2) {
+        // Resistor Start Termination
+        voltages[0] = getDrivingSubcircuitVoltage() - currents[0] * terminatingResistance;
+    } else if (startTerminationType == 3) {
+        // Capacitor Start Termination
+        voltages[0] = getDrivingSubcircuitVoltage() + (voltages[0] - getDrivingSubcircuitVoltage()) - currents[0] * timestep / terminatingCapacitance;
+    } else if (startTerminationType == 4) {
+        // Inductor Start Termination (graph fix)
+        voltages[0] = voltages[1];
     }
     if (terminationType == 4) {
+        // Capacitor End Termination
         voltages[voltages.length - 1] = voltages[voltages.length - 1] + currents[voltages.length - 2] * timestep / terminatingCapacitance;
     }
 
@@ -138,20 +151,24 @@ export function stepSimulation() {
 
     // Handle current boundary conditions
     if (terminationType == 1) {
-        // Open Circuit
+        // Open Circuit End Termination
         currents[voltages.length - 1] = 0;
     } else if (terminationType == 2) {
-        // Closed Circuit
+        // Closed Circuit End Termination
         currents[voltages.length - 1] = equationCoefficient3 * (- voltages[voltages.length - 1]) + equationCoefficient4 * currents[voltages.length - 1];
     } else if (terminationType == 3) {
-        // Resistor
-        currents[voltages.length - 1] = voltages[voltages.length - 1] / terminatingResistance!;
+        // Resistor End Termination
+        currents[voltages.length - 1] = voltages[voltages.length - 1] / terminatingResistance;
     } else if (terminationType == 4) {
-        // Capacitor (ignore last current but make it still look nice on graph)
+        // Capacitor End Termination (graph fix)
         currents[voltages.length - 1] = currents[voltages.length - 2];
     } else if (terminationType == 5) {
-        // Inductor
+        // Inductor End Termination
         currents[voltages.length - 1] = currents[voltages.length - 1] + voltages[voltages.length - 1] * timestep / terminatingInductance;
+    }
+    if (startTerminationType == 4) {
+        // Inductor Start Termination
+        currents[0] = currents[0] + (getDrivingSubcircuitVoltage() - voltages[1]) * timestep / terminatingInductance;
     }
 
     currentTick += 1;
@@ -183,4 +200,19 @@ export function getVoltages() {
  */
 export function getCurrents() {
     return currents;
+}
+
+function getDrivingSubcircuitVoltage(): number {
+    if (sourceType == 1) {
+        // Step Voltage Source
+        return voltageSourceVoltage;
+    } else if (sourceType == 2) {
+        // Pulse Voltage Source
+        return ((currentTick * timestep) % voltageSourcePeriod) < voltageSourcePulseLength ? voltageSourceVoltage : 0;
+    } else if (sourceType == 3) {
+        // Sinosoidal Voltage Source
+        return voltageSourceVoltage * Math.sin((currentTick * timestep) / voltageSourcePeriod * Math.PI);
+    } else {
+        throw new Error('Invalid source type!');
+    }
 }

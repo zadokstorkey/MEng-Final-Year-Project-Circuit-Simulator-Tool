@@ -47,6 +47,6 @@ export class SelectCircuitLayoutButton extends ActionButton implements ISelectCi
         let newCircuitLayoutChoice = this._simulatorSettingsViewModel.getCircuitLayoutChoice();
         let selected = newCircuitLayoutChoice === this._circuitLayoutChoice;
         this.innerElement.style.setProperty(this._cssSelectedVariableName, this._cssSelectedVariableValues[selected ? 1 : 0]);
-        console.log(this._cssSelectedVariableValues[selected ? 1 : 0])
+        console.log("Layout: Selected", newCircuitLayoutChoice);
     }
 }

@@ -4,14 +4,14 @@ import { ActionButton, IActionButton } from "../../general-purpose/actionButton.
 /**
  * Interface for a button for selecting a subcircuit layout for the driving subcircuit.
  */
-export interface ISelectCircuitLayoutButton extends IActionButton {
+export interface ISelectDrivingSubcircuitLayoutButton extends IActionButton {
 
 }
 
 /**
  * Class for a button for selecting a subcircuit layout for the driving subcircuit.
  */
-export class SelectDrivingSubcircuitLayoutButton extends ActionButton implements ISelectCircuitLayoutButton {
+export class SelectDrivingSubcircuitLayoutButton extends ActionButton implements ISelectDrivingSubcircuitLayoutButton {
     private _simulatorSettingsViewModel: ISimulatorSettingsViewModel;
     private _drivingSubcircuitLayoutChoice: string;
 
@@ -47,6 +47,6 @@ export class SelectDrivingSubcircuitLayoutButton extends ActionButton implements
         let newDrivingSubcircuitLayoutChoice = this._simulatorSettingsViewModel.getDrivingSubcircuitLayoutChoice();
         let selected = newDrivingSubcircuitLayoutChoice === this._drivingSubcircuitLayoutChoice;
         this.innerElement.style.setProperty(this._cssSelectedVariableName, this._cssSelectedVariableValues[selected ? 1 : 0]);
-        console.log(this._cssSelectedVariableValues[selected ? 1 : 0])
+        console.log("Voltage Source: Selected", newDrivingSubcircuitLayoutChoice);
     }
 }

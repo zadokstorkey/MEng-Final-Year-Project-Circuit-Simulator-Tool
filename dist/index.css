@@ -80,6 +80,7 @@ rect.svg-hidden-debug-box {
     fill: transparent;
     stroke-width: 1;
     vector-effect: non-scaling-stroke;
+    pointer-events: none;
 }
 
 rect.svg-hidden-debug-box-preview {

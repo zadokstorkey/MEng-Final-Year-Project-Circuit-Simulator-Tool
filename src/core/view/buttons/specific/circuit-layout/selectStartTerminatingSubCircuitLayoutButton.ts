@@ -1,19 +1,19 @@
-import { ISimulatorSettingsViewModel, ITerminatingSubcircuitLayoutChoice } from "../../../../viewmodel/settings/simulatorSettingsViewModel.js";
+import { ISimulatorSettingsViewModel, IStartTerminatingSubcircuitLayoutChoice } from "../../../../viewmodel/settings/simulatorSettingsViewModel.js";
 import { ActionButton, IActionButton } from "../../general-purpose/actionButton.js";
 
 /**
  * Interface for a button for selecting a subcircuit layout for the terminating subcircuit.
  */
-export interface ISelectTerminatingSubcircuitLayoutButton extends IActionButton {
+export interface ISelectStartTerminatingSubcircuitLayoutButton extends IActionButton {
 
 }
 
 /**
  * Class for a button for selecting a subcircuit layout for the terminating subcircuit.
  */
-export class SelectTerminatingSubcircuitLayoutButton extends ActionButton implements ISelectTerminatingSubcircuitLayoutButton {
+export class SelectStartTerminatingSubcircuitLayoutButton extends ActionButton implements ISelectStartTerminatingSubcircuitLayoutButton {
     private _simulatorSettingsViewModel: ISimulatorSettingsViewModel;
-    private _terminatingSubcircuitLayoutChoice: string;
+    private _startTerminatingSubcircuitLayoutChoice: string;
 
     /**
      * The name of the css variable which tracks whether the button is toggled.
@@ -26,11 +26,11 @@ export class SelectTerminatingSubcircuitLayoutButton extends ActionButton implem
     /**
      * Extends the button class and passes through a command to update the subcircuit layout choice when the button is pressed.
      */
-    public constructor(innerElement: HTMLDivElement, simulatorSettingsViewModel: ISimulatorSettingsViewModel, terminatingSubcircuitLayoutChoice: ITerminatingSubcircuitLayoutChoice, cssSelectedVariableName: string, cssSelectedVariableValues: [string, string]) {
-        super(innerElement, () => simulatorSettingsViewModel.setTerminatingSubcircuitLayoutChoice(terminatingSubcircuitLayoutChoice));
+    public constructor(innerElement: HTMLDivElement, simulatorSettingsViewModel: ISimulatorSettingsViewModel, startTerminatingSubcircuitLayoutChoice: IStartTerminatingSubcircuitLayoutChoice, cssSelectedVariableName: string, cssSelectedVariableValues: [string, string]) {
+        super(innerElement, () => simulatorSettingsViewModel.setStartTerminatingSubcircuitLayoutChoice(startTerminatingSubcircuitLayoutChoice));
 
         this._simulatorSettingsViewModel = simulatorSettingsViewModel;
-        this._terminatingSubcircuitLayoutChoice = terminatingSubcircuitLayoutChoice;
+        this._startTerminatingSubcircuitLayoutChoice = startTerminatingSubcircuitLayoutChoice;
         this._cssSelectedVariableName = cssSelectedVariableName;
         this._cssSelectedVariableValues = cssSelectedVariableValues;
         this._simulatorSettingsViewModelEventHandler = () => this._handlesimulatorSettingsViewModelUpdated();
@@ -44,9 +44,9 @@ export class SelectTerminatingSubcircuitLayoutButton extends ActionButton implem
      * When the choice is changed, update a css property (this is currently unused but would be used to highlight the selected option).
      */
     private _handlesimulatorSettingsViewModelUpdated() {
-        let newTerminatingSubcircuitLayoutChoice = this._simulatorSettingsViewModel.getTerminatingSubcircuitLayoutChoice();
-        let selected = newTerminatingSubcircuitLayoutChoice === this._terminatingSubcircuitLayoutChoice;
+        let newStartTerminatingSubcircuitLayoutChoice = this._simulatorSettingsViewModel.getStartTerminatingSubcircuitLayoutChoice();
+        let selected = newStartTerminatingSubcircuitLayoutChoice === this._startTerminatingSubcircuitLayoutChoice;
         this.innerElement.style.setProperty(this._cssSelectedVariableName, this._cssSelectedVariableValues[selected ? 1 : 0]);
-        console.log("End Termination: Selected", newTerminatingSubcircuitLayoutChoice);
+        console.log("Start Termination: Selected", newStartTerminatingSubcircuitLayoutChoice);
     }
 }
