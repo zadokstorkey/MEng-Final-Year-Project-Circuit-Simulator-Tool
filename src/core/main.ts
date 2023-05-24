@@ -33,7 +33,7 @@ async function run() {
     //let simulator = new WebAssemblySimulator();
 
     // Constructor Injection Root - ViewModel - Settings
-    let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0005, 0.0001, 50, 0.0001, 0.000000001);
+    let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0005, 0.0001, 50, 0.0001, 0.000001);
     
     // Constructor Injection Root - ViewModel - Data Sources
     let numberArrayDataSourceVoltageSpace = new NumberArrayDataSource(Array.from(new Array(1000)).map(v => 0));
@@ -108,16 +108,16 @@ async function run() {
     // Constructor Injection Root - View - Graphs
     let svgVoltageDistanceLineGraphElement = document.getElementById('voltage-distance-line-graph') as any as SVGPolylineElement;
     let svgVoltageDistanceLineGraph = new SVGLineGraph(svgVoltageDistanceLineGraphElement, numberArrayDataSourceVoltageSpace);
-    //let svgCurrentDistanceLineGraphElement = document.getElementById('current-distance-line-graph') as any as SVGPolylineElement;
-    //let svgCurrentDistanceLineGraph = new SVGLineGraph(svgCurrentDistanceLineGraphElement, numberArrayDataSourceCurrentSpace);
+    let svgCurrentDistanceLineGraphElement = document.getElementById('current-distance-line-graph') as any as SVGPolylineElement;
+    let svgCurrentDistanceLineGraph = new SVGLineGraph(svgCurrentDistanceLineGraphElement, numberArrayDataSourceCurrentSpace);
     let svgVoltageTimeLineGraph1Element = document.getElementById('voltage-time-line-graph-1') as any as SVGPolylineElement;
     let svgVoltageTimeLineGraph1 = new SVGLineGraph(svgVoltageTimeLineGraph1Element, numberArrayDataSourceVoltageTime1);
     let svgVoltageTimeLineGraph2Element = document.getElementById('voltage-time-line-graph-2') as any as SVGPolylineElement;
     let svgVoltageTimeLineGraph2 = new SVGLineGraph(svgVoltageTimeLineGraph2Element, numberArrayDataSourceVoltageTime2);
-    //let svgCurrentTimeLineGraph1Element = document.getElementById('current-time-line-graph-1') as any as SVGPolylineElement;
-    //let svgCurrentTimeLineGraph1 = new SVGLineGraph(svgCurrentTimeLineGraph1Element, numberArrayDataSourceCurrentTime1);
-    //let svgCurrentTimeLineGraph2Element = document.getElementById('current-time-line-graph-2') as any as SVGPolylineElement;
-    //let svgCurrentTimeLineGraph2 = new SVGLineGraph(svgCurrentTimeLineGraph2Element, numberArrayDataSourceCurrentTime2);
+    let svgCurrentTimeLineGraph1Element = document.getElementById('current-time-line-graph-1') as any as SVGPolylineElement;
+    let svgCurrentTimeLineGraph1 = new SVGLineGraph(svgCurrentTimeLineGraph1Element, numberArrayDataSourceCurrentTime1);
+    let svgCurrentTimeLineGraph2Element = document.getElementById('current-time-line-graph-2') as any as SVGPolylineElement;
+    let svgCurrentTimeLineGraph2 = new SVGLineGraph(svgCurrentTimeLineGraph2Element, numberArrayDataSourceCurrentTime2);
 
     // Run simulator
     let startVoltages = Array.from(new Array(1000)).map(v => 0);
@@ -128,26 +128,28 @@ async function run() {
     simulator.resetSimulation();
     while (true) {
         simulator.stepSimulation();
+        let voltages = simulator.getVoltages().map(v => v / 10);
+
         if (simulator.getTick() % 1000 == 0) {
             await new Promise(r => setTimeout(r, 10));
             let voltages = simulator.getVoltages().map(v => v / 10);
             let currents = simulator.getCurrents().map(c => c);
 
             numberArrayDataSourceVoltageSpace.setArrayData(voltages);
-            //numberArrayDataSourceCurrentSpace.setArrayData(currents);
+            numberArrayDataSourceCurrentSpace.setArrayData(currents);
 
             startVoltages.pop();
             startVoltages.unshift(voltages[0]);
             endVoltages.pop();
             endVoltages.unshift(voltages[voltages.length - 1]);
-            //startCurrents.pop();
-            //startCurrents.unshift(currents[0]);
-            //endCurrents.pop();
-            //endCurrents.unshift(currents[currents.length - 1]);
+            startCurrents.pop();
+            startCurrents.unshift(currents[0]);
+            endCurrents.pop();
+            endCurrents.unshift(currents[currents.length - 1]);
             numberArrayDataSourceVoltageTime1.setArrayData(startVoltages);
             numberArrayDataSourceVoltageTime2.setArrayData(endVoltages);
-            //numberArrayDataSourceCurrentTime1.setArrayData(startCurrents);
-            //numberArrayDataSourceCurrentTime2.setArrayData(endCurrents);
+            numberArrayDataSourceCurrentTime1.setArrayData(startCurrents);
+            numberArrayDataSourceCurrentTime2.setArrayData(endCurrents);
         }
     }
 }

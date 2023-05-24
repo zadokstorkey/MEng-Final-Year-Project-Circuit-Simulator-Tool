@@ -176,7 +176,7 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
     }
 
     public setVoltageSourcePeriod(value: number): void {
-        this._voltageSourcePulseLength = value;
+        this._voltageSourcePeriod = value;
         this._invokeUpdated();
         this._updateSimulator();
     }

@@ -118,15 +118,17 @@ export function stepSimulation() {
 
     // Handle voltage boundary conditions
     if (sourceType == 1) {
+        // Step Voltage Source
         voltages[0] = voltageSourceVoltage!;
     } else if (sourceType == 2) {
+        // Pulse Voltage Source
         voltages[0] = ((currentTick * timestep) % voltageSourcePeriod!) < voltageSourcePulseLength! ? voltageSourceVoltage! : 0;
     } else if (sourceType == 3) {
+        // Sinosoidal Voltage Source
         voltages[0] = voltageSourceVoltage * Math.sin((currentTick * timestep) / voltageSourcePeriod! * Math.PI);
     }
     if (terminationType == 4) {
-        // Capacitor is easier to handle as a voltage boundary condition
-        voltages[voltages.length - 1] = voltages[voltages.length - 2] - (currents[voltages.length - 2] * timestep / (terminatingCapacitance!));
+        voltages[voltages.length - 1] = voltages[voltages.length - 1] + currents[voltages.length - 2] * timestep / terminatingCapacitance;
     }
 
     // Step the currents
@@ -145,11 +147,11 @@ export function stepSimulation() {
         // Resistor
         currents[voltages.length - 1] = voltages[voltages.length - 1] / terminatingResistance!;
     } else if (terminationType == 4) {
-        // The capacitor is handled as a voltage constraint, this just makes it looks better on the graphs
+        // Capacitor (ignore last current but make it still look nice on graph)
         currents[voltages.length - 1] = currents[voltages.length - 2];
     } else if (terminationType == 5) {
         // Inductor
-        currents[voltages.length - 1] = currents[voltages.length - 1] - (voltages[voltages.length - 1] * timestep / (terminatingInductance!));
+        currents[voltages.length - 1] = currents[voltages.length - 1] + voltages[voltages.length - 1] * timestep / terminatingInductance;
     }
 
     currentTick += 1;

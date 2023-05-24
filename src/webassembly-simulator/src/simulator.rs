@@ -113,7 +113,7 @@ pub fn step_simultion() -> () {
     }
     if simulation_settings.termination_type == 4 {
         // Capacitor is easier to handle as a voltage boundary condition
-        simulation_state.voltages[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 2] - (simulation_state.currents[simulation_settings.transmission_line_segments - 2] * simulation_settings.timestep / (simulation_settings.terminating_capacitance));
+        simulation_state.voltages[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] + simulation_state.currents[simulation_settings.transmission_line_segments - 2] * simulation_settings.timestep / simulation_settings.terminating_capacitance;
     }
 
     // Step the currents
@@ -135,7 +135,7 @@ pub fn step_simultion() -> () {
         simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 2];
     } else if simulation_settings.termination_type == 5 {
         // Inductor
-        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 1] - (simulation_state.voltages[simulation_settings.transmission_line_segments - 1] * simulation_settings.timestep / (simulation_settings.terminating_inductance));
+        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 1] + simulation_state.voltages[simulation_settings.transmission_line_segments - 1] * simulation_settings.timestep / simulation_settings.terminating_inductance;
     }
 
     simulation_state.current_tick += 1;
