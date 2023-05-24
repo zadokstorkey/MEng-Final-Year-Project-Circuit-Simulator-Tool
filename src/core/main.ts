@@ -1,9 +1,9 @@
 import { TypescriptSimulator } from "./model/simulator/typescriptSimulator.js";
 import { WebAssemblySimulator } from "./model/simulator/webAssemblySimulator.js";
 import { ActionButton } from "./view/buttons/general-purpose/actionButton.js";
-import { SelectCircuitLayoutButton } from "./view/buttons/specific/selectCircuitLayoutButton.js";
-import { SelectDrivingSubcircuitLayoutButton } from "./view/buttons/specific/selectDrivingSubCircuitLayoutButton.js";
-import { SelectTerminatingSubcircuitLayoutButton } from "./view/buttons/specific/selectTerminatingSubCircuitLayoutButton.js";
+import { SelectCircuitLayoutButton } from "./view/buttons/specific/circuit-layout/selectCircuitLayoutButton.js";
+import { SelectDrivingSubcircuitLayoutButton } from "./view/buttons/specific/circuit-layout/selectDrivingSubCircuitLayoutButton.js";
+import { SelectTerminatingSubcircuitLayoutButton } from "./view/buttons/specific/circuit-layout/selectTerminatingSubCircuitLayoutButton.js";
 import { SVGDrivingSubcircuit } from "./view/svg/svg-driving-subcircuit/svgDrivingSubcircuit.js";
 import { SVGLineGraph } from "./view/svg/svg-line-graph/svgLineGraph.js";
 import { SVGTerminatingSubcircuit } from "./view/svg/svg-terminating-subcircuit/svgTerminatingSubcircuit.js";
@@ -24,7 +24,7 @@ import { SVGTransmissionLineComponent } from "./view/svg/svg-circuit-component/t
  * - Starts the simulator.
  */
 
-// Call the asyncronous run method without an await to put the program in an asyncronoius context
+// Call the asyncronous run method without an await to put the program in an asyncronous context
 run();
 
 async function run() {
@@ -43,33 +43,53 @@ async function run() {
     let numberArrayDataSourceCurrentTime1 = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => 0));
     let numberArrayDataSourceCurrentTime2 = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => 0));
 
-    // Constructor Injection Root - View - Top Menus
-    let newButtonElement = document.getElementById('file-sub-menu-item-new') as HTMLDivElement;
-    let newButton = new ActionButton(newButtonElement, () => 'new');
-    let openButtonElement = document.getElementById('file-sub-menu-item-open') as HTMLDivElement;
-    let openButton = new ActionButton(openButtonElement, () => 'open');
-    let saveButtonElement = document.getElementById('file-sub-menu-item-save') as HTMLDivElement;
-    let saveButton = new ActionButton(saveButtonElement, () => 'save');
+    // Constructor Injection Root - View - Top Menus - File Menu
+    let newMenuButtonElement = document.getElementById('file-sub-menu-item-new') as HTMLDivElement;
+    let newMenuButton = new ActionButton(newMenuButtonElement, () => 'new');
+    let openMenuButtonElement = document.getElementById('file-sub-menu-item-open') as HTMLDivElement;
+    let openMenuButton = new ActionButton(openMenuButtonElement, () => 'open');
+    let saveMenuButtonElement = document.getElementById('file-sub-menu-item-save') as HTMLDivElement;
+    let saveMenuButton = new ActionButton(saveMenuButtonElement, () => 'save');
     
-    // Constructor Injection Root - View - Circuit Layout Choice
-    let selectBasicCircuitLayoutButtonElement = document.getElementById('basic-circuit-layout-preview-container') as HTMLDivElement;
-    let selectBasicCircuitLayoutButton = new SelectCircuitLayoutButton(selectBasicCircuitLayoutButtonElement, simulatorSettingsViewModel, 'basic', '--basic-circuit-visible', ['1', '0']);
-    let selectStepDrivingSubcircuitLayoutButtonElement = document.getElementById('step-driving-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectStepDrivingSubcircuitLayoutButton = new SelectDrivingSubcircuitLayoutButton(selectStepDrivingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'step', '--step-driving-subcircuit-visible', ['1', '0']);
-    let selectPulseDrivingSubcircuitLayoutButtonElement = document.getElementById('pulse-driving-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectPulseDrivingSubcircuitLayoutButton = new SelectDrivingSubcircuitLayoutButton(selectPulseDrivingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'pulse', '--pulse-driving-subcircuit-visible', ['1', '0']);
-    let selectSineDrivingSubcircuitLayoutButtonElement = document.getElementById('sine-driving-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectSineDrivingSubcircuitLayoutButton = new SelectDrivingSubcircuitLayoutButton(selectSineDrivingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'sine', '--sine-driving-subcircuit-visible', ['1', '0']);
-    let selectOpenCircuitTerminatingSubcircuitLayoutButtonElement = document.getElementById('open-circuit-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectOpenCircuitTerminatingSubcircuitLayoutButton = new SelectTerminatingSubcircuitLayoutButton(selectOpenCircuitTerminatingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'open circuit', '--open-circuit-terminating-subcircuit-visible', ['1', '0']);
-    let selectClosedCircuitTerminatingSubcircuitLayoutButtonElement = document.getElementById('closed-circuit-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectClosedCircuitTerminatingSubcircuitLayoutButton = new SelectTerminatingSubcircuitLayoutButton(selectClosedCircuitTerminatingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'closed circuit', '--closed-circuit-terminating-subcircuit-visible', ['1', '0']);
-    let selectResistorTerminatingSubcircuitLayoutButtonElement = document.getElementById('resistor-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectResistorTerminatingSubcircuitLayoutButton = new SelectTerminatingSubcircuitLayoutButton(selectResistorTerminatingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'resistor', '--resistor-terminating-subcircuit-visible', ['1', '0']);
-    let selectCapacitorTerminatingSubcircuitLayoutButtonElement = document.getElementById('capacitor-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectCapacitorTerminatingSubcircuitLayoutButton = new SelectTerminatingSubcircuitLayoutButton(selectCapacitorTerminatingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'capacitor', '--capacitor-terminating-subcircuit-visible', ['1', '0']);
-    let selectInductorTerminatingSubcircuitLayoutButtonElement = document.getElementById('inductor-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
-    let selectInductorTerminatingSubcircuitLayoutButton = new SelectTerminatingSubcircuitLayoutButton(selectInductorTerminatingSubcircuitLayoutButtonElement, simulatorSettingsViewModel, 'inductor', '--inductor-terminating-subcircuit-visible', ['1', '0']);
+    // Constructor Injection Root - View - Top Menus - Circuit Layout Menu
+    let selectBasicCircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-circuit-standard') as HTMLDivElement;
+    let selectBasicCircuitLayoutMenuButton = new SelectCircuitLayoutButton(selectBasicCircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'basic', '--basic-circuit-visible', ['1', '0']);
+    let selectStepDrivingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-driving-subcircuit-step') as HTMLDivElement;
+    let selectStepDrivingSubcircuitLayoutMenuButton = new SelectDrivingSubcircuitLayoutButton(selectStepDrivingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'step', '--step-driving-subcircuit-visible', ['1', '0']);
+    let selectPulseDrivingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-driving-subcircuit-pulse') as HTMLDivElement;
+    let selectPulseDrivingSubcircuitLayoutMenuButton = new SelectDrivingSubcircuitLayoutButton(selectPulseDrivingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'pulse', '--pulse-driving-subcircuit-visible', ['1', '0']);
+    let selectSineDrivingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-driving-subcircuit-sine') as HTMLDivElement;
+    let selectSineDrivingSubcircuitLayoutMenuButton = new SelectDrivingSubcircuitLayoutButton(selectSineDrivingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'sine', '--sine-driving-subcircuit-visible', ['1', '0']);
+    let selectOpenCircuitTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-open-circuit') as HTMLDivElement;
+    let selectOpenCircuitTerminatingSubcircuitLayoutMenuButton = new SelectTerminatingSubcircuitLayoutButton(selectOpenCircuitTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'open circuit', '--open-circuit-terminating-subcircuit-visible', ['1', '0']);
+    let selectClosedCircuitTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-closed-circuit') as HTMLDivElement;
+    let selectClosedCircuitTerminatingSubcircuitLayoutMenuButton = new SelectTerminatingSubcircuitLayoutButton(selectClosedCircuitTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'closed circuit', '--closed-circuit-terminating-subcircuit-visible', ['1', '0']);
+    let selectResistorTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-resistor') as HTMLDivElement;
+    let selectResistorTerminatingSubcircuitLayoutMenuButton = new SelectTerminatingSubcircuitLayoutButton(selectResistorTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'resistor', '--resistor-terminating-subcircuit-visible', ['1', '0']);
+    let selectCapacitorTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-capacitor') as HTMLDivElement;
+    let selectCapacitorTerminatingSubcircuitLayoutMenuButton = new SelectTerminatingSubcircuitLayoutButton(selectCapacitorTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'capacitor', '--capacitor-terminating-subcircuit-visible', ['1', '0']);
+    let selectInductorTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-inductor') as HTMLDivElement;
+    let selectInductorTerminatingSubcircuitLayoutMenuButton = new SelectTerminatingSubcircuitLayoutButton(selectInductorTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'inductor', '--inductor-terminating-subcircuit-visible', ['1', '0']);
+    
+    // Constructor Injection Root - View - Sidebar
+    let selectBasicCircuitLayoutSidebarButtonElement = document.getElementById('basic-circuit-layout-preview-container') as HTMLDivElement;
+    let selectBasicCircuitLayoutSidebarButton = new SelectCircuitLayoutButton(selectBasicCircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'basic', '--basic-circuit-visible', ['1', '0']);
+    let selectStepDrivingSubcircuitLayoutSidebarButtonElement = document.getElementById('step-driving-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectStepDrivingSubcircuitLayoutSidebarButton = new SelectDrivingSubcircuitLayoutButton(selectStepDrivingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'step', '--step-driving-subcircuit-visible', ['1', '0']);
+    let selectPulseDrivingSubcircuitLayoutSidebarButtonElement = document.getElementById('pulse-driving-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectPulseDrivingSubcircuitLayoutSidebarButton = new SelectDrivingSubcircuitLayoutButton(selectPulseDrivingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'pulse', '--pulse-driving-subcircuit-visible', ['1', '0']);
+    let selectSineDrivingSubcircuitLayoutSidebarButtonElement = document.getElementById('sine-driving-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectSineDrivingSubcircuitLayoutSidebarButton = new SelectDrivingSubcircuitLayoutButton(selectSineDrivingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'sine', '--sine-driving-subcircuit-visible', ['1', '0']);
+    let selectOpenCircuitTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('open-circuit-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectOpenCircuitTerminatingSubcircuitLayoutSidebarButton = new SelectTerminatingSubcircuitLayoutButton(selectOpenCircuitTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'open circuit', '--open-circuit-terminating-subcircuit-visible', ['1', '0']);
+    let selectClosedCircuitTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('closed-circuit-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectClosedCircuitTerminatingSubcircuitLayoutSidebarButton = new SelectTerminatingSubcircuitLayoutButton(selectClosedCircuitTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'closed circuit', '--closed-circuit-terminating-subcircuit-visible', ['1', '0']);
+    let selectResistorTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('resistor-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectResistorTerminatingSubcircuitLayoutSidebarButton = new SelectTerminatingSubcircuitLayoutButton(selectResistorTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'resistor', '--resistor-terminating-subcircuit-visible', ['1', '0']);
+    let selectCapacitorTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('capacitor-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectCapacitorTerminatingSubcircuitLayoutSidebarButton = new SelectTerminatingSubcircuitLayoutButton(selectCapacitorTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'capacitor', '--capacitor-terminating-subcircuit-visible', ['1', '0']);
+    let selectInductorTerminatingSubcircuitLayoutSidebarButtonElement = document.getElementById('inductor-terminating-subcircuit-layout-preview-container') as HTMLDivElement;
+    let selectInductorTerminatingSubcircuitLayoutSidebarButton = new SelectTerminatingSubcircuitLayoutButton(selectInductorTerminatingSubcircuitLayoutSidebarButtonElement, simulatorSettingsViewModel, 'inductor', '--inductor-terminating-subcircuit-visible', ['1', '0']);
 
     // Constructor Injection Root - View - Circuits and Subcircuits
     let svgStepDrivingSubCircuitElement = document.getElementById('step-driving-subcircuit') as any as SVGGElement;

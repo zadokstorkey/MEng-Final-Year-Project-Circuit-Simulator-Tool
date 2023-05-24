@@ -1,5 +1,5 @@
-import { ICircuitLayoutChoice, ISimulatorSettingsViewModel } from "../../../viewmodel/settings/simulatorSettingsViewModel.js";
-import { ActionButton, IActionButton } from "../general-purpose/actionButton.js";
+import { ICircuitLayoutChoice, ISimulatorSettingsViewModel } from "../../../../viewmodel/settings/simulatorSettingsViewModel.js";
+import { ActionButton, IActionButton } from "../../general-purpose/actionButton.js";
 
 /**
  * Interface for a button for selecting a circuit layout.
