@@ -46,7 +46,7 @@
      * @param terminatingCapacitance The capacitance of the terminating capacitor (only has an effect if there is a terminating capacitor)
      * @param terminatingInductance The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
      */
-    configureSimulator(simulationType: ISimulationType, sourceType: ISourceType, startTerminationType: IStartTerminationType, endTerminationType: ITerminationType, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, terminatingResistance: number, terminatingCapacitance: number, terminatingInductance: number): void;
+    configureSimulator(simulationType: "basic", sourceType: "step" | "pulse" | "sine", startTerminationType: "closed circuit" | "resistor" | "capacitor" | "inductor", endTerminationType: "open circuit" | "closed circuit" | "resistor" | "capacitor" | "inductor", timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, startTerminatingResistance: number, startTerminatingCapacitance: number, startTerminatingInductance: number, endTerminatingResistance: number, endTerminatingCapacitance: number, endTerminatingInductance: number): void;
 
     /**
      * Resets the voltages, currents and current tick to zero.

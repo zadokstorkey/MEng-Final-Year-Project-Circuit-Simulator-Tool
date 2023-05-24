@@ -34,12 +34,18 @@ export interface ISimulatorSettingsViewModel extends INotifyOnUpdate {
     setVoltageSourcePeriod(value: number): void;
     getVoltageSourcePulseDuration(): number;
     setVoltageSourcePulseDuration(value: number): void;
-    getTerminatingResistance(): number;
-    setTerminatingResistance(value: number): void;
-    getTerminatingCapacitance(): number;
-    setTerminatingCapacitance(value: number): void;
-    getTerminatingInductance(): number;
-    setTerminatingInductance(value: number): void;
+    getStartTerminatingResistance(): number;
+    setStartTerminatingResistance(value: number): void;
+    getStartTerminatingCapacitance(): number;
+    setStartTerminatingCapacitance(value: number): void;
+    getStartTerminatingInductance(): number;
+    setStartTerminatingInductance(value: number): void;
+    getEndTerminatingResistance(): number;
+    setEndTerminatingResistance(value: number): void;
+    getEndTerminatingCapacitance(): number;
+    setEndTerminatingCapacitance(value: number): void;
+    getEndTerminatingInductance(): number;
+    setEndTerminatingInductance(value: number): void;
 }
 
 /**
@@ -60,11 +66,14 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
     private _voltageSourceVoltage: number;
     private _voltageSourcePeriod: number;
     private _voltageSourcePulseLength: number;
-    private _terminatingResistance: number;
-    private _terminatingCapacitance: number;
-    private _terminatingInductance: number;
+    private _startTerminatingResistance: number;
+    private _startTerminatingCapacitance: number;
+    private _startTerminatingInductance: number;
+    private _endTerminatingResistance: number;
+    private _endTerminatingCapacitance: number;
+    private _endTerminatingInductance: number;
 
-    public constructor(simulator: ISimulator, circuitLayoutChoice: ICircuitLayoutChoice, drivingSubcircuitLayoutChoice: IDrivingSubcircuitLayoutChoice, startTerminatingSubcircuitLayoutChoice: IStartTerminatingSubcircuitLayoutChoice, terminatingSubcircuitLayoutChoice: ITerminatingSubcircuitLayoutChoice, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, terminatingResistance: number, terminatingInductance: number, terminatingCapacitance: number) {
+    public constructor(simulator: ISimulator, circuitLayoutChoice: ICircuitLayoutChoice, drivingSubcircuitLayoutChoice: IDrivingSubcircuitLayoutChoice, startTerminatingSubcircuitLayoutChoice: IStartTerminatingSubcircuitLayoutChoice, terminatingSubcircuitLayoutChoice: ITerminatingSubcircuitLayoutChoice, timestep: number, transmissionLineSegments: number, transmissionLineResistance: number, transmissionLineConductance: number, transmissionLineInductance: number, transmissionLineCapacitance: number, voltageSourceVoltage: number, voltageSourcePeriod: number, voltageSourcePulseLength: number, startTerminatingResistance: number, startTerminatingCapacitance: number, startTerminatingInductance: number, endTerminatingResistance: number, endTerminatingCapacitance: number, endTerminatingInductance: number) {
         super();
         this._simulator = simulator;
         this._circuitLayoutChoice = circuitLayoutChoice;
@@ -80,9 +89,12 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
         this._voltageSourceVoltage = voltageSourceVoltage;
         this._voltageSourcePeriod = voltageSourcePeriod;
         this._voltageSourcePulseLength = voltageSourcePulseLength;
-        this._terminatingResistance = terminatingResistance;
-        this._terminatingCapacitance = terminatingCapacitance;
-        this._terminatingInductance = terminatingInductance;
+        this._startTerminatingResistance = startTerminatingResistance;
+        this._startTerminatingCapacitance = startTerminatingCapacitance;
+        this._startTerminatingInductance = startTerminatingInductance;
+        this._endTerminatingResistance = endTerminatingResistance;
+        this._endTerminatingCapacitance = endTerminatingCapacitance;
+        this._endTerminatingInductance = endTerminatingInductance;
         this._updateSimulator();
     }
 
@@ -206,37 +218,67 @@ export class SimulatorSettingsViewModel extends NotifyOnUpdate implements ISimul
         this._updateSimulator();
     }
 
-    public getTerminatingResistance(): number {
-        return this._terminatingResistance;
+    public getStartTerminatingResistance(): number {
+        return this._startTerminatingResistance;
     }
 
-    public setTerminatingResistance(value: number): void {
-        this._terminatingResistance = value;
+    public setStartTerminatingResistance(value: number): void {
+        this._startTerminatingResistance = value;
         this._invokeUpdated();
         this._updateSimulator();
     }
 
-    public getTerminatingCapacitance(): number {
-        return this._terminatingCapacitance;
+    public getStartTerminatingCapacitance(): number {
+        return this._startTerminatingCapacitance;
     }
 
-    public setTerminatingCapacitance(value: number): void {
-        this._terminatingCapacitance = value;
+    public setStartTerminatingCapacitance(value: number): void {
+        this._startTerminatingCapacitance = value;
         this._invokeUpdated();
         this._updateSimulator();
     }
 
-    public getTerminatingInductance(): number {
-        return this._terminatingInductance;
+    public getStartTerminatingInductance(): number {
+        return this._startTerminatingInductance;
     }
 
-    public setTerminatingInductance(value: number): void {
-        this._terminatingInductance = value;
+    public setStartTerminatingInductance(value: number): void {
+        this._startTerminatingInductance = value;
+        this._invokeUpdated();
+        this._updateSimulator();
+    }
+
+    public getEndTerminatingResistance(): number {
+        return this._endTerminatingResistance;
+    }
+
+    public setEndTerminatingResistance(value: number): void {
+        this._endTerminatingResistance = value;
+        this._invokeUpdated();
+        this._updateSimulator();
+    }
+
+    public getEndTerminatingCapacitance(): number {
+        return this._endTerminatingCapacitance;
+    }
+
+    public setEndTerminatingCapacitance(value: number): void {
+        this._endTerminatingCapacitance = value;
+        this._invokeUpdated();
+        this._updateSimulator();
+    }
+
+    public getEndTerminatingInductance(): number {
+        return this._endTerminatingInductance;
+    }
+
+    public setEndTerminatingInductance(value: number): void {
+        this._endTerminatingInductance = value;
         this._invokeUpdated();
         this._updateSimulator();
     }
 
     private _updateSimulator() {
-        this._simulator.configureSimulator(this._circuitLayoutChoice, this._drivingSubcircuitLayoutChoice, this._startTerminatingSubcircuitLayoutChoice, this._terminatingSubcircuitLayoutChoice, this._timestep, this._transmissionLineSegments, this._transmissionLineResistance, this._transmissionLineConductance, this._transmissionLineInductance, this._transmissionLineCapacitance, this._voltageSourceVoltage, this._voltageSourcePeriod, this._voltageSourcePulseLength, this._terminatingResistance, this._terminatingCapacitance, this._terminatingInductance);
+        this._simulator.configureSimulator(this._circuitLayoutChoice, this._drivingSubcircuitLayoutChoice, this._startTerminatingSubcircuitLayoutChoice, this._terminatingSubcircuitLayoutChoice, this._timestep, this._transmissionLineSegments, this._transmissionLineResistance, this._transmissionLineConductance, this._transmissionLineInductance, this._transmissionLineCapacitance, this._voltageSourceVoltage, this._voltageSourcePeriod, this._voltageSourcePulseLength, this._startTerminatingResistance, this._startTerminatingCapacitance, this._startTerminatingInductance, this._endTerminatingResistance, this._endTerminatingCapacitance, this._endTerminatingInductance);
     }
 }

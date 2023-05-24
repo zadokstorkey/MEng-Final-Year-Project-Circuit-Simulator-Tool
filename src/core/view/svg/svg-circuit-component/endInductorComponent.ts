@@ -4,14 +4,14 @@ import { IUIElement, UIElement } from "../../ui-element/uiElement.js";
 /**
  * Interface for the behaviour of the inductor svg element that allows you to change the inductance.
  */
-export interface ISVGInductorComponent extends IUIElement<SVGGElement> {
+export interface ISVGEndInductorComponent extends IUIElement<SVGGElement> {
 
 }
 
 /**
  * Class for the behaviour of the inductor svg element that allows you to change the inductance.
  */
-export class SVGInductorComponent extends UIElement<SVGGElement> implements ISVGInductorComponent {
+export class SVGEndInductorComponent extends UIElement<SVGGElement> implements ISVGEndInductorComponent {
     private _simulatorSettingsViewModel: ISimulatorSettingsViewModel;
     private _clickEventHandler: () => void;
     private _simulatorSettingsUpdatedEventHandler: () => void;
@@ -37,13 +37,13 @@ export class SVGInductorComponent extends UIElement<SVGGElement> implements ISVG
     }
 
     private _handleClick() {
-        let inductance = this._simulatorSettingsViewModel.getTerminatingInductance();
+        let inductance = this._simulatorSettingsViewModel.getEndTerminatingInductance();
         let newInductanceString = prompt(`Set inductance:\n(previous value was ${inductance} ohms)`);
         let newInductance = parseFloat(newInductanceString!);
-        this._simulatorSettingsViewModel.setTerminatingInductance(newInductance);
+        this._simulatorSettingsViewModel.setEndTerminatingInductance(newInductance);
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getTerminatingInductance()}H (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getEndTerminatingInductance()}H (double-click to modify)`;
     }
 }

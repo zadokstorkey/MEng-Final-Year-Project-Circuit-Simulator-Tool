@@ -2,16 +2,16 @@ import { ISimulatorSettingsViewModel } from "../../../viewmodel/settings/simulat
 import { IUIElement, UIElement } from "../../ui-element/uiElement.js";
 
 /**
- * Interface for the behaviour of the resistor svg element that allows you to change the resistance.
+ * Interface for the behaviour of the capacitor svg element that allows you to change the capacitance.
  */
-export interface ISVGResistorComponent extends IUIElement<SVGGElement> {
+export interface ISVGEndCapacitorComponent extends IUIElement<SVGGElement> {
 
 }
 
 /**
- * Class for the behaviour of the resistor svg element that allows you to change the resistance.
+ * Class for the behaviour of the capacitor svg element that allows you to change the capacitance.
  */
-export class SVGResistorComponent extends UIElement<SVGGElement> implements ISVGResistorComponent {
+export class SVGEndCapacitorComponent extends UIElement<SVGGElement> implements ISVGEndCapacitorComponent {
     private _simulatorSettingsViewModel: ISimulatorSettingsViewModel;
     private _clickEventHandler: () => void;
     private _simulatorSettingsUpdatedEventHandler: () => void;
@@ -37,13 +37,13 @@ export class SVGResistorComponent extends UIElement<SVGGElement> implements ISVG
     }
 
     private _handleClick() {
-        let resistance = this._simulatorSettingsViewModel.getTerminatingResistance();
-        let newResistanceString = prompt(`Set resistance:\n(previous value was ${resistance} ohms)`);
-        let newResistance = parseFloat(newResistanceString!);
-        this._simulatorSettingsViewModel.setTerminatingResistance(newResistance);
+        let capacitance = this._simulatorSettingsViewModel.getEndTerminatingCapacitance();
+        let newCapacitanceString = prompt(`Set capacitance:\n(previous value was ${capacitance}F)`);
+        let newCapacitance = parseFloat(newCapacitanceString!);
+        this._simulatorSettingsViewModel.setEndTerminatingCapacitance(newCapacitance);
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getTerminatingResistance()} ohms (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getEndTerminatingCapacitance()} ohms (double-click to modify)`;
     }
 }

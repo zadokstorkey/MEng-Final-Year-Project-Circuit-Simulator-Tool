@@ -35,9 +35,12 @@ let transmissionLineSegments: number;
 let voltageSourceVoltage: number;
 let voltageSourcePeriod: number;
 let voltageSourcePulseLength: number;
-let terminatingResistance: number;
-let terminatingCapacitance: number;
-let terminatingInductance: number;
+let startTerminatingResistance: number;
+let startTerminatingCapacitance: number;
+let startTerminatingInductance: number;
+let endTerminatingResistance: number;
+let endTerminatingCapacitance: number;
+let endTerminatingInductance: number;
 
 /**
  * Coefficients derived from configuration variables
@@ -69,11 +72,14 @@ let currents: number[] = [];
  * @param voltageSourceVoltageValue The max voltage of the voltage source
  * @param voltageSourcePeriodValue  The period of the voltage source (affects only to pulse and sine sources)
  * @param voltageSourcePulseLengthValue The length of a pulse of the voltage source (affects only pulse sources)
- * @param terminatingResistanceValue The resistance of the terminating resistor (only has an effect if there is a terminating resistor)
- * @param terminatingCapacitanceValue The capacitance of the terminating capacitor (only has an effect if there is a terminating capacitor)
- * @param terminatingInductanceValue The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
+ * @param startTerminatingResistanceValue The resistance of the terminating resistor (only has an effect if there is a terminating resistor)
+ * @param startTerminatingCapacitanceValue The capacitance of the terminating capacitor (only has an effect if there is a terminating capacitor)
+ * @param startTerminatingInductanceValue The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
+ * @param endTerminatingResistanceValue The resistance of the terminating resistor (only has an effect if there is a terminating resistor)
+ * @param endTerminatingCapacitanceValue The capacitance of the terminating capacitor (only has an effect if there is a terminating capacitor)
+ * @param endTerminatingInductanceValue The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
  */
-export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, sourceTypeValue: ISourceTypeNumber, startTerminationTypeValue: IStartTerminationTypeNumber, endTerminationTypeValue: ITerminationTypeNumber, timestepValue: number, transmissionLineSegmentsValue: number, transmissionLineResistanceValue: number, transmissionLineConductanceValue: number, transmissionLineInductanceValue: number, transmissionLineCapacitanceValue: number, voltageSourceVoltageValue: number, voltageSourcePeriodValue: number, voltageSourcePulseLengthValue: number, terminatingResistanceValue: number, terminatingCapacitanceValue: number, terminatingInductanceValue: number) {
+export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, sourceTypeValue: ISourceTypeNumber, startTerminationTypeValue: IStartTerminationTypeNumber, endTerminationTypeValue: ITerminationTypeNumber, timestepValue: number, transmissionLineSegmentsValue: number, transmissionLineResistanceValue: number, transmissionLineConductanceValue: number, transmissionLineInductanceValue: number, transmissionLineCapacitanceValue: number, voltageSourceVoltageValue: number, voltageSourcePeriodValue: number, voltageSourcePulseLengthValue: number, startTerminatingResistanceValue: number, startTerminatingCapacitanceValue: number, startTerminatingInductanceValue: number, endTerminatingResistanceValue: number, endTerminatingCapacitanceValue: number, endTerminatingInductanceValue: number) {
     simulationType = simulationTypeValue;
     sourceType = sourceTypeValue;
     console.log("start termination number:", startTerminationTypeValue, "end termination number:", endTerminationTypeValue);
@@ -84,9 +90,12 @@ export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, s
     voltageSourceVoltage = voltageSourceVoltageValue;
     voltageSourcePeriod = voltageSourcePeriodValue;
     voltageSourcePulseLength = voltageSourcePulseLengthValue;
-    terminatingResistance = terminatingResistanceValue;
-    terminatingCapacitance = terminatingCapacitanceValue;
-    terminatingInductance = terminatingInductanceValue;
+    startTerminatingResistance = startTerminatingResistanceValue;
+    startTerminatingCapacitance = startTerminatingCapacitanceValue;
+    startTerminatingInductance = startTerminatingInductanceValue;
+    endTerminatingResistance = endTerminatingResistanceValue;
+    endTerminatingCapacitance = endTerminatingCapacitanceValue;
+    endTerminatingInductance = endTerminatingInductanceValue;
     
     equationCoefficient1 = (-2 * timestep) / (timestep * transmissionLineConductanceValue + 2 * transmissionLineCapacitanceValue);
     equationCoefficient2 = (2 * transmissionLineCapacitanceValue - timestep * transmissionLineConductanceValue) / (2 * transmissionLineCapacitanceValue + timestep * transmissionLineConductanceValue);
@@ -131,17 +140,17 @@ export function stepSimulation() {
         voltages[0] = getDrivingSubcircuitVoltage();
     } else if (startTerminationType == 2) {
         // Resistor Start Termination
-        voltages[0] = getDrivingSubcircuitVoltage() - currents[0] * terminatingResistance;
+        voltages[0] = getDrivingSubcircuitVoltage() - currents[0] * startTerminatingResistance;
     } else if (startTerminationType == 3) {
         // Capacitor Start Termination
-        voltages[0] = getDrivingSubcircuitVoltage() + (voltages[0] - getDrivingSubcircuitVoltage()) - currents[0] * timestep / terminatingCapacitance;
+        voltages[0] = getDrivingSubcircuitVoltage() + (voltages[0] - getDrivingSubcircuitVoltage()) - currents[0] * timestep / startTerminatingCapacitance;
     } else if (startTerminationType == 4) {
         // Inductor Start Termination (graph fix)
         voltages[0] = voltages[1];
     }
     if (terminationType == 4) {
         // Capacitor End Termination
-        voltages[voltages.length - 1] = voltages[voltages.length - 1] + currents[voltages.length - 2] * timestep / terminatingCapacitance;
+        voltages[voltages.length - 1] = voltages[voltages.length - 1] + currents[voltages.length - 2] * timestep / endTerminatingCapacitance;
     }
 
     // Step the currents
@@ -158,17 +167,17 @@ export function stepSimulation() {
         currents[voltages.length - 1] = equationCoefficient3 * (- voltages[voltages.length - 1]) + equationCoefficient4 * currents[voltages.length - 1];
     } else if (terminationType == 3) {
         // Resistor End Termination
-        currents[voltages.length - 1] = voltages[voltages.length - 1] / terminatingResistance;
+        currents[voltages.length - 1] = voltages[voltages.length - 1] / endTerminatingResistance;
     } else if (terminationType == 4) {
         // Capacitor End Termination (graph fix)
         currents[voltages.length - 1] = currents[voltages.length - 2];
     } else if (terminationType == 5) {
         // Inductor End Termination
-        currents[voltages.length - 1] = currents[voltages.length - 1] + voltages[voltages.length - 1] * timestep / terminatingInductance;
+        currents[voltages.length - 1] = currents[voltages.length - 1] + voltages[voltages.length - 1] * timestep / endTerminatingInductance;
     }
     if (startTerminationType == 4) {
         // Inductor Start Termination
-        currents[0] = currents[0] + (getDrivingSubcircuitVoltage() - voltages[1]) * timestep / terminatingInductance;
+        currents[0] = currents[0] + (getDrivingSubcircuitVoltage() - voltages[1]) * timestep / startTerminatingInductance;
     }
 
     currentTick += 1;
