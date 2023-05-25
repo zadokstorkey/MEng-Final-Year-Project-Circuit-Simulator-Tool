@@ -138,6 +138,7 @@ export function stepSimulation() {
     } else if (startTerminationType == 2) {
         // Resistor Start Termination
         voltages[0] = getDrivingSubcircuitVoltage() - currents[0] * startTerminatingResistance;
+        //voltages[0] = 2*(getDrivingSubcircuitVoltage() - currents[0] * startTerminatingResistance - voltages[0] / 2);
     } else if (startTerminationType == 3) {
         // Capacitor Start Termination
         voltages[0] = getDrivingSubcircuitVoltage() + (voltages[0] - getDrivingSubcircuitVoltage()) - currents[0] * timestep / startTerminatingCapacitance;
@@ -165,6 +166,7 @@ export function stepSimulation() {
     } else if (endTerminationType == 3) {
         // Resistor End Termination
         currents[voltages.length - 1] = voltages[voltages.length - 1] / endTerminatingResistance;
+        //currents[voltages.length - 1] = 2*(voltages[voltages.length - 1] / endTerminatingResistance - currents[voltages.length - 1] / 2);
     } else if (endTerminationType == 4) {
         // Capacitor End Termination (graph fix)
         currents[voltages.length - 1] = currents[voltages.length - 2];

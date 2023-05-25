@@ -34,20 +34,20 @@ run();
 
 async function run() {
     // Constructor Injection Root - Model - Simulator
-    let simulator = new TypescriptSimulator();
-    //let simulator = new WebAssemblySimulator();
+    //let simulator = new TypescriptSimulator();
+    let simulator = new WebAssemblySimulator();
     await simulator.initialiseSimulator();
 
     // Constructor Injection Root - ViewModel - Settings
-    let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "closed circuit", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0005, 0.0001, 50, 0.0001, 0.001, 50, 0.0001, 0.001);
+    let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "closed circuit", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0015, 0.0001, 50, 0.000001, 0.001, 50, 0.000001, 0.001);
     
     // Constructor Injection Root - ViewModel - Data Sources
     let numberArrayDataSourceVoltageSpace = new NumberArrayDataSource(Array.from(new Array(1000)).map(v => 0));
-    let numberArrayDataSourceCurrentSpace = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => 0));
+    let numberArrayDataSourceCurrentSpace = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => NaN));
     let numberArrayDataSourceVoltageTime1 = new NumberArrayDataSource(Array.from(new Array(1000)).map(v => 0));
     let numberArrayDataSourceVoltageTime2 = new NumberArrayDataSource(Array.from(new Array(1000)).map(v => 0));
-    let numberArrayDataSourceCurrentTime1 = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => 0));
-    let numberArrayDataSourceCurrentTime2 = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => 0));
+    let numberArrayDataSourceCurrentTime1 = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => NaN));
+    let numberArrayDataSourceCurrentTime2 = new NumberArrayDataSource(Array.from(new Array(1000)).map(c => NaN));
 
     // Constructor Injection Root - View - Top Menus - File Menu
     let newMenuButtonElement = document.getElementById('file-sub-menu-item-new') as HTMLDivElement;
@@ -183,12 +183,11 @@ async function run() {
     simulator.resetSimulation();
     while (true) {
         simulator.stepSimulation();
-        let voltages = simulator.getVoltages().map(v => v / 10);
 
         if (simulator.getTick() % 1000 == 0) {
             await new Promise(r => setTimeout(r, 10));
             let voltages = simulator.getVoltages().map(v => v / 10);
-            let currents = simulator.getCurrents().map(c => c);
+            //let currents = simulator.getCurrents().map(c => NaN);
 
             numberArrayDataSourceVoltageSpace.setArrayData(voltages);
             //numberArrayDataSourceCurrentSpace.setArrayData(currents);
@@ -197,10 +196,10 @@ async function run() {
             startVoltages.unshift(voltages[0]);
             endVoltages.pop();
             endVoltages.unshift(voltages[voltages.length - 1]);
-            startCurrents.pop();
-            startCurrents.unshift(currents[0]);
-            endCurrents.pop();
-            endCurrents.unshift(currents[currents.length - 1]);
+            //startCurrents.pop();
+            //startCurrents.unshift(currents[0]);
+            //endCurrents.pop();
+            //endCurrents.unshift(currents[currents.length - 1]);
             numberArrayDataSourceVoltageTime1.setArrayData(startVoltages);
             numberArrayDataSourceVoltageTime2.setArrayData(endVoltages);
             //numberArrayDataSourceCurrentTime1.setArrayData(startCurrents);

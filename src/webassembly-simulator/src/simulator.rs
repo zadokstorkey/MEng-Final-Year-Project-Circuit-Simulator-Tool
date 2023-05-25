@@ -127,6 +127,7 @@ pub fn step_simultion() -> () {
     } else if simulation_settings.start_termination_type == 2 {
         // Resistor Start Termination
         simulation_state.voltages[0] = get_driving_subcircuit_voltage(&simulation_settings, &simulation_state) - simulation_state.currents[0] * simulation_settings.start_terminating_resistance;
+        //simulation_state.voltages[0] = 2f64 * (get_driving_subcircuit_voltage(&simulation_settings, &simulation_state) - simulation_state.currents[0] * simulation_settings.start_terminating_resistance - simulation_state.voltages[0] / 2f64);
     } else if simulation_settings.start_termination_type == 3 {
         // Capacitor Start Termination
         simulation_state.voltages[0] = get_driving_subcircuit_voltage(&simulation_settings, &simulation_state) + (simulation_state.voltages[0] - get_driving_subcircuit_voltage(&simulation_settings, &simulation_state)) - simulation_state.currents[0] * simulation_settings.timestep / simulation_settings.start_terminating_capacitance;
@@ -153,7 +154,8 @@ pub fn step_simultion() -> () {
         simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_settings.equation_coefficient_3 * (- simulation_state.voltages[simulation_settings.transmission_line_segments - 1]) + simulation_settings.equation_coefficient_4 * simulation_state.currents[simulation_settings.transmission_line_segments - 1];
     } else if simulation_settings.end_termination_type == 3 {
         // Resistor End Termination
-        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] / simulation_settings.end_terminating_resistance;
+        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] / simulation_settings.end_terminating_resistance - simulation_state.currents[simulation_settings.transmission_line_segments - 1];
+        //simulation_state.currents[simulation_settings.transmission_line_segments - 1] = 2f64 * (simulation_state.voltages[simulation_settings.transmission_line_segments - 1] / simulation_settings.end_terminating_resistance - simulation_state.currents[simulation_settings.transmission_line_segments - 1] / 2f64);
     } else if simulation_settings.end_termination_type == 4 {
         // Capacitor End Termination (graph fix)
         simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 2];
