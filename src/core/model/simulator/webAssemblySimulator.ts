@@ -33,7 +33,7 @@ export class WebAssemblySimulator implements ISimulator {
         let sourceTypeNumber = ["step", "pulse", "sine"].indexOf(sourceType) + 1;
         let startTerminationTypeNumber = ["closed circuit", "resistor", "capacitor", "inductor"].indexOf(startTerminationType) + 1;
         let endTerminationTypeNumber = ["open circuit", "closed circuit", "resistor", "capacitor", "inductor"].indexOf(endTerminationType) + 1;
-        //configureSimulator(simulationTypeNumber as 1, sourceTypeNumber as 1 | 2 | 3, terminationTypeNumber as 1 | 2 | 3 | 4 | 5, timestep, transmissionLineSegments, transmissionLineResistance, transmissionLineConductance, transmissionLineInductance, transmissionLineCapacitance, voltageSourceVoltage, voltageSourcePeriod!, voltageSourcePulseLength!, terminatingResistance!, terminatingCapacitance!, terminatingInductance!);
+        configureSimulator(simulationTypeNumber as 1, sourceTypeNumber as 1 | 2 | 3, startTerminationTypeNumber as 1 | 2 | 3 | 4 | 5, endTerminationTypeNumber as 1 | 2 | 3 | 4 | 5, timestep, transmissionLineSegments, transmissionLineResistance, transmissionLineConductance, transmissionLineInductance, transmissionLineCapacitance, voltageSourceVoltage, voltageSourcePeriod, voltageSourcePulseLength, startTerminatingResistance, startTerminatingCapacitance, startTerminatingInductance, endTerminatingResistance, endTerminatingCapacitance, endTerminatingInductance);
     }
 
     /**

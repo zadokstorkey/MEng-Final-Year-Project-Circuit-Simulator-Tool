@@ -41,16 +41,20 @@ export class SVGSineVoltageSourceComponent extends UIElement<SVGGElement> implem
         let voltageSourceVoltage = this._simulatorSettingsViewModel.getVoltageSourceVoltage();
         let newVoltageSourceVoltageString = prompt(`Set voltage source voltage:\n(previous value was ${voltageSourceVoltage}V)`);
         let newVoltageSourceVoltage = parseFloat(newVoltageSourceVoltageString!);
-        this._simulatorSettingsViewModel.setVoltageSourceVoltage(newVoltageSourceVoltage);
+        if (!isNaN(newVoltageSourceVoltage)) {
+            this._simulatorSettingsViewModel.setVoltageSourceVoltage(newVoltageSourceVoltage);
+        }
         
         // Set period
         let voltageSourcePeriod = this._simulatorSettingsViewModel.getVoltageSourcePeriod();
         let newVoltageSourcePeriodString = prompt(`Set voltage source period:\n(previous value was ${voltageSourcePeriod}s)`);
         let newVoltageSourcePeriod = parseFloat(newVoltageSourcePeriodString!);
-        this._simulatorSettingsViewModel.setVoltageSourcePeriod(newVoltageSourcePeriod);
+        if (!isNaN(newVoltageSourcePeriod)) {
+            this._simulatorSettingsViewModel.setVoltageSourcePeriod(newVoltageSourcePeriod);
+        }
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getVoltageSourceVoltage()}V, ${this._simulatorSettingsViewModel.getVoltageSourcePeriod()}s (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Sinosoidal Voltage Source (double-click to modify)\nVoltage: ${this._simulatorSettingsViewModel.getVoltageSourceVoltage()}V\nPeriod: ${this._simulatorSettingsViewModel.getVoltageSourcePeriod()}s`;
     }
 }

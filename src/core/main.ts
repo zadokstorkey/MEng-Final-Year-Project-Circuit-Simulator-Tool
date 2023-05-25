@@ -36,6 +36,7 @@ async function run() {
     // Constructor Injection Root - Model - Simulator
     let simulator = new TypescriptSimulator();
     //let simulator = new WebAssemblySimulator();
+    await simulator.initialiseSimulator();
 
     // Constructor Injection Root - ViewModel - Settings
     let simulatorSettingsViewModel = new SimulatorSettingsViewModel(simulator, "basic", "step", "closed circuit", "resistor", 0.000000005, 10000, 0.0025, 0.0000001, 0.00001, 0.000000004, 5, 0.0005, 0.0001, 50, 0.0001, 0.001, 50, 0.0001, 0.001);
@@ -171,7 +172,6 @@ async function run() {
     let endVoltages = Array.from(new Array(1000)).map(v => 0);
     let startCurrents = Array.from(new Array(1000)).map(c => 0);
     let endCurrents = Array.from(new Array(1000)).map(c => 0);
-    await simulator.initialiseSimulator();
     simulator.resetSimulation();
     while (true) {
         simulator.stepSimulation();

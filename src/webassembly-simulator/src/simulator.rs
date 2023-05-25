@@ -1,21 +1,25 @@
 use once_cell::sync::Lazy;
-use std::sync::Mutex;
-use wasm_bindgen::prelude::*;
-use std::f32::consts::PI;
+use std::sync::{Mutex, MutexGuard};
+use wasm_bindgen::{prelude::*, throw_str};
+use std::f64::consts::PI;
 
 /// All the simulation configuration options
 static SIMULATION_SETTINGS: Lazy<Mutex<SimulationSettings>> = Lazy::new(||Mutex::new(SimulationSettings {
     simulation_type: 0i32,
     source_type: 0i32,
-    termination_type: 0i32,
+    start_termination_type: 0i32,
+    end_termination_type: 0i32,
     timestep: 0f64,
     transmission_line_segments: 0usize,
     voltage_source_voltage: 0f64,
     voltage_source_period: 0f64,
     voltage_source_pulse_length: 0f64,
-    terminating_resistance: 0f64,
-    terminating_capacitance: 0f64,
-    terminating_inductance: 0f64,
+    start_terminating_resistance: 0f64,
+    start_terminating_capacitance: 0f64,
+    start_terminating_inductance: 0f64,
+    end_terminating_resistance: 0f64,
+    end_terminating_capacitance: 0f64,
+    end_terminating_inductance: 0f64,
     equation_coefficient_1: 0f64,
     equation_coefficient_2: 0f64,
     equation_coefficient_3: 0f64,
@@ -27,15 +31,19 @@ static SIMULATION_SETTINGS: Lazy<Mutex<SimulationSettings>> = Lazy::new(||Mutex:
 pub struct SimulationSettings {
     simulation_type: i32,
     source_type: i32,
-    termination_type: i32,
+    start_termination_type: i32,
+    end_termination_type: i32,
     timestep: f64,
     transmission_line_segments: usize,
     voltage_source_voltage: f64,
     voltage_source_period: f64,
     voltage_source_pulse_length: f64,
-    terminating_resistance: f64,
-    terminating_capacitance: f64,
-    terminating_inductance: f64,
+    start_terminating_resistance: f64,
+    start_terminating_capacitance: f64,
+    start_terminating_inductance: f64,
+    end_terminating_resistance: f64,
+    end_terminating_capacitance: f64,
+    end_terminating_inductance: f64,
     equation_coefficient_1: f64,
     equation_coefficient_2: f64,
     equation_coefficient_3: f64,
@@ -59,27 +67,36 @@ pub struct SimulationState {
 
 /// Configure the simulator
 #[wasm_bindgen(js_name = "configureSimulator")]
-pub fn configure_simulator(simulation_type: i32, source_type: i32, termination_type: i32, timestep: f64, transmission_line_segments: usize, transmission_line_resistance: f64, transmission_line_conductance: f64, transmission_line_inductance: f64, transmission_line_capacitance: f64, voltage_source_voltage: f64, voltage_source_period: f64, voltage_source_pulse_length: f64, terminating_resistance: f64, terminating_capacitance: f64, terminating_inductance: f64) -> () {
-    let mut simulation_settings = SIMULATION_SETTINGS.lock().unwrap();
+pub fn configure_simulator(simulation_type: i32, source_type: i32, start_termination_type: i32, end_termination_type: i32, timestep: f64, transmission_line_segments: usize, transmission_line_resistance: f64, transmission_line_conductance: f64, transmission_line_inductance: f64, transmission_line_capacitance: f64, voltage_source_voltage: f64, voltage_source_period: f64, voltage_source_pulse_length: f64, start_terminating_resistance: f64, start_terminating_capacitance: f64, start_terminating_inductance: f64, end_terminating_resistance: f64, end_terminating_capacitance: f64, end_terminating_inductance: f64) -> () {
+        let mut simulation_settings = SIMULATION_SETTINGS.lock().unwrap();
+    
+    let segment_count_changing = simulation_settings.transmission_line_segments != transmission_line_segments;
+    
     simulation_settings.simulation_type = simulation_type;
     simulation_settings.source_type = source_type;
-    simulation_settings.termination_type = termination_type;
+    simulation_settings.start_termination_type = start_termination_type;
+    simulation_settings.end_termination_type = end_termination_type;
     simulation_settings.timestep = timestep;
     simulation_settings.transmission_line_segments = transmission_line_segments;
     simulation_settings.voltage_source_voltage = voltage_source_voltage;
     simulation_settings.voltage_source_period = voltage_source_period;
     simulation_settings.voltage_source_pulse_length = voltage_source_pulse_length;
-    simulation_settings.terminating_resistance = terminating_resistance;
-    simulation_settings.terminating_capacitance = terminating_capacitance;
-    simulation_settings.terminating_inductance = terminating_inductance;
+    simulation_settings.start_terminating_resistance = start_terminating_resistance;
+    simulation_settings.start_terminating_capacitance = start_terminating_capacitance;
+    simulation_settings.start_terminating_inductance = start_terminating_inductance;
+    simulation_settings.end_terminating_resistance = end_terminating_resistance;
+    simulation_settings.end_terminating_capacitance = end_terminating_capacitance;
+    simulation_settings.end_terminating_inductance = end_terminating_inductance;
     simulation_settings.equation_coefficient_1 = (-2f64 * timestep) / (timestep * transmission_line_conductance + 2f64 * transmission_line_capacitance);
     simulation_settings.equation_coefficient_2 = (2f64 * transmission_line_capacitance - timestep * transmission_line_conductance) / (2f64 * transmission_line_capacitance + timestep * transmission_line_conductance);
     simulation_settings.equation_coefficient_3 = (-2f64 * timestep) / (timestep * transmission_line_resistance + 2f64 * transmission_line_inductance);
     simulation_settings.equation_coefficient_4 = (2f64 * transmission_line_inductance - timestep * transmission_line_resistance) / (2f64 * transmission_line_inductance + timestep * transmission_line_resistance);
 
     let mut simulation_state = SIMULATION_STATE.lock().unwrap();
-    simulation_state.voltages = vec![0.0; transmission_line_segments];
-    simulation_state.currents = vec![0.0; transmission_line_segments];
+    if segment_count_changing {
+        simulation_state.voltages = vec![0.0; transmission_line_segments];
+        simulation_state.currents = vec![0.0; transmission_line_segments];
+    }
 }
 
 /// Reset the simulation values for current and voltage
@@ -99,43 +116,54 @@ pub fn step_simultion() -> () {
     let mut simulation_state = SIMULATION_STATE.lock().unwrap();
 
     // Step the voltages
-    for index in 0..simulation_settings.transmission_line_segments {
+    for index in 1..simulation_settings.transmission_line_segments {
         simulation_state.voltages[index] = simulation_settings.equation_coefficient_1 * (simulation_state.currents[index] - simulation_state.currents[index - 1]) + simulation_settings.equation_coefficient_2 * simulation_state.voltages[index];
     }
 
     // Handle voltage boundary conditions
-    if simulation_settings.source_type == 1 {
-        simulation_state.voltages[0] = simulation_settings.voltage_source_voltage;
-    } else if simulation_settings.source_type == 2 {
-        simulation_state.voltages[0] = if (((simulation_state.current_tick as f64) * simulation_settings.timestep) % simulation_settings.voltage_source_period) < simulation_settings.voltage_source_pulse_length {simulation_settings.voltage_source_voltage} else { 0f64 };
-    } else if simulation_settings.source_type == 3 {
-        simulation_state.voltages[0] = simulation_settings.voltage_source_voltage * (((simulation_state.current_tick as f64) * simulation_settings.timestep) / simulation_settings.voltage_source_period * (PI as f64)).sin();
+    if simulation_settings.start_termination_type == 1 {
+        // Closed Circuit Start Termination
+        simulation_state.voltages[0] = get_driving_subcircuit_voltage(&simulation_settings, &simulation_state);
+    } else if simulation_settings.start_termination_type == 2 {
+        // Resistor Start Termination
+        simulation_state.voltages[0] = get_driving_subcircuit_voltage(&simulation_settings, &simulation_state) - simulation_state.currents[0] * simulation_settings.start_terminating_resistance;
+    } else if simulation_settings.start_termination_type == 3 {
+        // Capacitor Start Termination
+        simulation_state.voltages[0] = get_driving_subcircuit_voltage(&simulation_settings, &simulation_state) + (simulation_state.voltages[0] - get_driving_subcircuit_voltage(&simulation_settings, &simulation_state)) - simulation_state.currents[0] * simulation_settings.timestep / simulation_settings.start_terminating_capacitance;
+    } else if simulation_settings.start_termination_type == 4 {
+        // Inductor Start Termination (graph fix)
+        simulation_state.voltages[0] = simulation_state.voltages[1];
     }
-    if simulation_settings.termination_type == 4 {
-        // Capacitor is easier to handle as a voltage boundary condition
-        simulation_state.voltages[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] + simulation_state.currents[simulation_settings.transmission_line_segments - 2] * simulation_settings.timestep / simulation_settings.terminating_capacitance;
+    if simulation_settings.end_termination_type == 4 {
+        // Capacitor End Termination
+        simulation_state.voltages[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] + simulation_state.currents[simulation_settings.transmission_line_segments - 2] * simulation_settings.timestep / simulation_settings.end_terminating_capacitance;
     }
 
     // Step the currents
-    for index in 0..simulation_settings.transmission_line_segments {
-        simulation_state.currents[index] = simulation_settings.equation_coefficient_3 * (simulation_state.voltages[index] - simulation_state.voltages[index - 1]) + simulation_settings.equation_coefficient_4 * simulation_state.currents[index];
+    for index in 0..(simulation_settings.transmission_line_segments-1) {
+        simulation_state.currents[index] = simulation_settings.equation_coefficient_3 * (simulation_state.voltages[index + 1] - simulation_state.voltages[index]) + simulation_settings.equation_coefficient_4 * simulation_state.currents[index];
     }
+
     // Handle current boundary conditions
-    if simulation_settings.termination_type == 1 {
-        // Open Circuit
+    if simulation_settings.end_termination_type == 1 {
+        // Open Circuit End Termination
         simulation_state.currents[simulation_settings.transmission_line_segments - 1] = 0f64;
-    } else if simulation_settings.termination_type == 2 {
-        // Closed Circuit
+    } else if simulation_settings.end_termination_type == 2 {
+        // Closed Circuit End Termination
         simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_settings.equation_coefficient_3 * (- simulation_state.voltages[simulation_settings.transmission_line_segments - 1]) + simulation_settings.equation_coefficient_4 * simulation_state.currents[simulation_settings.transmission_line_segments - 1];
-    } else if simulation_settings.termination_type == 3 {
-        // Resistor
-        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] / simulation_settings.terminating_resistance;
-    } else if simulation_settings.termination_type == 4 {
-        // The capacitor is handled as a voltage constraint, this just makes it looks better on the graphs
+    } else if simulation_settings.end_termination_type == 3 {
+        // Resistor End Termination
+        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.voltages[simulation_settings.transmission_line_segments - 1] / simulation_settings.end_terminating_resistance;
+    } else if simulation_settings.end_termination_type == 4 {
+        // Capacitor End Termination (graph fix)
         simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 2];
-    } else if simulation_settings.termination_type == 5 {
-        // Inductor
-        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 1] + simulation_state.voltages[simulation_settings.transmission_line_segments - 1] * simulation_settings.timestep / simulation_settings.terminating_inductance;
+    } else if simulation_settings.end_termination_type == 5 {
+        // Inductor End Termination
+        simulation_state.currents[simulation_settings.transmission_line_segments - 1] = simulation_state.currents[simulation_settings.transmission_line_segments - 1] + simulation_state.voltages[simulation_settings.transmission_line_segments - 1] * simulation_settings.timestep / simulation_settings.end_terminating_inductance;
+    }
+    if simulation_settings.start_termination_type == 4 {
+        // Inductor Start Termination
+        simulation_state.currents[0] = simulation_state.currents[0] + (get_driving_subcircuit_voltage(&simulation_settings, &simulation_state) - simulation_state.voltages[1]) * simulation_settings.timestep / simulation_settings.start_terminating_inductance;
     }
 
     simulation_state.current_tick += 1;
@@ -168,4 +196,20 @@ pub fn get_voltages() -> Vec<f64> {
 pub fn get_currents() -> Vec<f64> {
     let simulation_state = SIMULATION_STATE.lock().unwrap();
     return simulation_state.currents.clone();
+}
+
+fn get_driving_subcircuit_voltage(simulation_settings: &MutexGuard<'_, SimulationSettings, >, simulation_state: &MutexGuard<'_, SimulationState, >) -> f64 {
+    if simulation_settings.source_type == 1 {
+        return simulation_settings.voltage_source_voltage;
+    } else if simulation_settings.source_type == 2 {
+        if (simulation_state.current_tick as f64 * simulation_settings.timestep) % simulation_settings.voltage_source_period < simulation_settings.voltage_source_pulse_length {
+            return simulation_settings.voltage_source_voltage;
+        } else {
+            return 0f64;
+        }
+    } else if simulation_settings.source_type == 3 {
+        return simulation_settings.voltage_source_voltage * ((simulation_state.current_tick as f64 * simulation_settings.timestep) / simulation_settings.voltage_source_period * PI).sin();
+    } else {
+        throw_str("Invalid source type!");
+    }
 }

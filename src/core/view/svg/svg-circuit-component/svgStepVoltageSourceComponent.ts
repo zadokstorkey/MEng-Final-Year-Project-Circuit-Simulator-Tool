@@ -40,10 +40,12 @@ export class SVGStepVoltageSourceComponent extends UIElement<SVGGElement> implem
         let voltageSourceVoltage = this._simulatorSettingsViewModel.getVoltageSourceVoltage();
         let newVoltageSourceVoltageString = prompt(`Set voltage source voltage:\n(previous value was ${voltageSourceVoltage}V)`);
         let newVoltageSourceVoltage = parseFloat(newVoltageSourceVoltageString!);
-        this._simulatorSettingsViewModel.setVoltageSourceVoltage(newVoltageSourceVoltage);
+        if (!isNaN(newVoltageSourceVoltage)) {
+            this._simulatorSettingsViewModel.setVoltageSourceVoltage(newVoltageSourceVoltage);
+        }
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getVoltageSourceVoltage()}V (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Step Voltage Source (double-click to modify)\nVoltage: ${this._simulatorSettingsViewModel.getVoltageSourceVoltage()}V`;
     }
 }

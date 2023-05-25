@@ -40,10 +40,13 @@ export class SVGStartCapacitorComponent extends UIElement<SVGGElement> implement
         let capacitance = this._simulatorSettingsViewModel.getStartTerminatingCapacitance();
         let newCapacitanceString = prompt(`Set capacitance:\n(previous value was ${capacitance}F)`);
         let newCapacitance = parseFloat(newCapacitanceString!);
+        if (isNaN(newCapacitance)) {
+            console.error(newCapacitanceString, 'is not a numeric value');
+        }
         this._simulatorSettingsViewModel.setStartTerminatingCapacitance(newCapacitance);
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getStartTerminatingCapacitance()} ohms (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Capacitor (double-click to modify)\nCapacitance: ${this._simulatorSettingsViewModel.getStartTerminatingCapacitance()}F`;
     }
 }

@@ -40,10 +40,13 @@ export class SVGStartResistorComponent extends UIElement<SVGGElement> implements
         let resistance = this._simulatorSettingsViewModel.getStartTerminatingResistance();
         let newResistanceString = prompt(`Set resistance:\n(previous value was ${resistance} ohms)`);
         let newResistance = parseFloat(newResistanceString!);
+        if (isNaN(newResistance)) {
+            return;
+        }
         this._simulatorSettingsViewModel.setStartTerminatingResistance(newResistance);
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getStartTerminatingResistance()} ohms (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Resistor (double-click to modify)\nResistance: ${this._simulatorSettingsViewModel.getStartTerminatingResistance()} ohms`;
     }
 }

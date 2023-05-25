@@ -47,6 +47,5 @@ export class SelectDrivingSubcircuitLayoutButton extends ActionButton implements
         let newDrivingSubcircuitLayoutChoice = this._simulatorSettingsViewModel.getDrivingSubcircuitLayoutChoice();
         let selected = newDrivingSubcircuitLayoutChoice === this._drivingSubcircuitLayoutChoice;
         this.innerElement.style.setProperty(this._cssSelectedVariableName, this._cssSelectedVariableValues[selected ? 1 : 0]);
-        console.log("Voltage Source: Selected", newDrivingSubcircuitLayoutChoice);
     }
 }

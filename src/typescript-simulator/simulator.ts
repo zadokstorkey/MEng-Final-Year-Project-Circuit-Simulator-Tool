@@ -29,7 +29,7 @@ let simulationConfigured: boolean = false;
 let simulationType: ISimulationTypeNumber;
 let sourceType: ISourceTypeNumber;
 let startTerminationType: IStartTerminationTypeNumber;
-let terminationType: ITerminationTypeNumber;
+let endTerminationType: ITerminationTypeNumber;
 let timestep: number;
 let transmissionLineSegments: number;
 let voltageSourceVoltage: number;
@@ -80,11 +80,12 @@ let currents: number[] = [];
  * @param endTerminatingInductanceValue The inductance of the terminating inductor (only has an effect if there is a terminating capacitor)
  */
 export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, sourceTypeValue: ISourceTypeNumber, startTerminationTypeValue: IStartTerminationTypeNumber, endTerminationTypeValue: ITerminationTypeNumber, timestepValue: number, transmissionLineSegmentsValue: number, transmissionLineResistanceValue: number, transmissionLineConductanceValue: number, transmissionLineInductanceValue: number, transmissionLineCapacitanceValue: number, voltageSourceVoltageValue: number, voltageSourcePeriodValue: number, voltageSourcePulseLengthValue: number, startTerminatingResistanceValue: number, startTerminatingCapacitanceValue: number, startTerminatingInductanceValue: number, endTerminatingResistanceValue: number, endTerminatingCapacitanceValue: number, endTerminatingInductanceValue: number) {
+    let segmentCountChanging = transmissionLineSegments != transmissionLineSegmentsValue;
+    
     simulationType = simulationTypeValue;
     sourceType = sourceTypeValue;
-    console.log("start termination number:", startTerminationTypeValue, "end termination number:", endTerminationTypeValue);
     startTerminationType = startTerminationTypeValue;
-    terminationType = endTerminationTypeValue;
+    endTerminationType = endTerminationTypeValue;
     timestep = timestepValue;
     transmissionLineSegments = transmissionLineSegmentsValue;
     voltageSourceVoltage = voltageSourceVoltageValue;
@@ -102,13 +103,9 @@ export function configureSimulator(simulationTypeValue: ISimulationTypeNumber, s
     equationCoefficient3 = (-2 * timestep) / (timestep * transmissionLineResistanceValue + 2 * transmissionLineInductanceValue);
     equationCoefficient4 = (2 * transmissionLineInductanceValue - timestep * transmissionLineResistanceValue) / (2 * transmissionLineInductanceValue + timestep * transmissionLineResistanceValue);
 
-    while (voltages.length > transmissionLineSegments) {
-        voltages.pop();
-        currents.pop();
-    }
-    while (voltages.length < transmissionLineSegments) {
-        voltages.push(0);
-        currents.push(0);
+    if (segmentCountChanging) {
+        voltages = new Array(transmissionLineSegmentsValue).fill(0);
+        currents = new Array(transmissionLineSegmentsValue).fill(0);
     }
 
     simulationConfigured = true;
@@ -148,7 +145,7 @@ export function stepSimulation() {
         // Inductor Start Termination (graph fix)
         voltages[0] = voltages[1];
     }
-    if (terminationType == 4) {
+    if (endTerminationType == 4) {
         // Capacitor End Termination
         voltages[voltages.length - 1] = voltages[voltages.length - 1] + currents[voltages.length - 2] * timestep / endTerminatingCapacitance;
     }
@@ -159,19 +156,19 @@ export function stepSimulation() {
     }
 
     // Handle current boundary conditions
-    if (terminationType == 1) {
+    if (endTerminationType == 1) {
         // Open Circuit End Termination
         currents[voltages.length - 1] = 0;
-    } else if (terminationType == 2) {
+    } else if (endTerminationType == 2) {
         // Closed Circuit End Termination
         currents[voltages.length - 1] = equationCoefficient3 * (- voltages[voltages.length - 1]) + equationCoefficient4 * currents[voltages.length - 1];
-    } else if (terminationType == 3) {
+    } else if (endTerminationType == 3) {
         // Resistor End Termination
         currents[voltages.length - 1] = voltages[voltages.length - 1] / endTerminatingResistance;
-    } else if (terminationType == 4) {
+    } else if (endTerminationType == 4) {
         // Capacitor End Termination (graph fix)
         currents[voltages.length - 1] = currents[voltages.length - 2];
-    } else if (terminationType == 5) {
+    } else if (endTerminationType == 5) {
         // Inductor End Termination
         currents[voltages.length - 1] = currents[voltages.length - 1] + voltages[voltages.length - 1] * timestep / endTerminatingInductance;
     }

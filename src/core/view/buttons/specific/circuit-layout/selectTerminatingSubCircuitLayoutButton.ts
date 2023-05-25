@@ -47,6 +47,5 @@ export class SelectTerminatingSubcircuitLayoutButton extends ActionButton implem
         let newTerminatingSubcircuitLayoutChoice = this._simulatorSettingsViewModel.getTerminatingSubcircuitLayoutChoice();
         let selected = newTerminatingSubcircuitLayoutChoice === this._terminatingSubcircuitLayoutChoice;
         this.innerElement.style.setProperty(this._cssSelectedVariableName, this._cssSelectedVariableValues[selected ? 1 : 0]);
-        console.log("End Termination: Selected", newTerminatingSubcircuitLayoutChoice);
     }
 }

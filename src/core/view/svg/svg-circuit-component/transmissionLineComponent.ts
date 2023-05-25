@@ -40,30 +40,40 @@ export class SVGTransmissionLineComponent extends UIElement<SVGGElement> impleme
         let resistance = this._simulatorSettingsViewModel.getTransmissionLineResistance();
         let newResistanceString = prompt(`Set resistance per unit length:\n(previous value was ${resistance} ohms)`);
         let newResistance = parseFloat(newResistanceString!);
-        this._simulatorSettingsViewModel.setTransmissionLineResistance(newResistance);
+        if (!isNaN(newResistance)) {
+            this._simulatorSettingsViewModel.setTransmissionLineResistance(newResistance);
+        }
         
         let conductance = this._simulatorSettingsViewModel.getTransmissionLineConductance();
         let newConductanceString = prompt(`Set conductance per unit length:\n(previous value was ${conductance}S)`);
         let newConductance = parseFloat(newConductanceString!);
-        this._simulatorSettingsViewModel.setTransmissionLineConductance(newConductance);
+        if (!isNaN(newConductance)) {
+            this._simulatorSettingsViewModel.setTransmissionLineConductance(newConductance);
+        }
         
         let inductance = this._simulatorSettingsViewModel.getTransmissionLineInductance();
         let newInductanceString = prompt(`Set inductance per unit length:\n(previous value was ${inductance}H)`);
         let newInductance = parseFloat(newInductanceString!);
-        this._simulatorSettingsViewModel.setTransmissionLineInductance(newInductance);
+        if (!isNaN(newInductance)) {
+            this._simulatorSettingsViewModel.setTransmissionLineInductance(newInductance);
+        }
         
         let capacitance = this._simulatorSettingsViewModel.getTransmissionLineInductance();
         let newCapacitanceString = prompt(`Set capcacitance per unit length:\n(previous value was ${capacitance}F)`);
         let newCapacitance = parseFloat(newCapacitanceString!);
-        this._simulatorSettingsViewModel.setTransmissionLineInductance(newCapacitance);
+        if (!isNaN(newCapacitance)) {
+            this._simulatorSettingsViewModel.setTransmissionLineInductance(newCapacitance);
+        }
         
         let segments = this._simulatorSettingsViewModel.getTransmissionLineSegments();
         let newSegmentsString = prompt(`Set capcacitance per unit length:\n(previous value was ${segments} segments)`);
         let newSegments = parseFloat(newSegmentsString!);
-        this._simulatorSettingsViewModel.setTransmissionLineSegments(newSegments);
+        if (!isNaN(newSegments)) {
+            this._simulatorSettingsViewModel.setTransmissionLineSegments(newSegments);
+        }
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getTransmissionLineResistance()} ohms, ${this._simulatorSettingsViewModel.getTransmissionLineConductance()}S, ${this._simulatorSettingsViewModel.getTransmissionLineInductance()}H, ${this._simulatorSettingsViewModel.getTransmissionLineCapacitance()}F, ${this._simulatorSettingsViewModel.getTransmissionLineSegments()} segments (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Transmission Line (double-click to modify)\nResistance Per Unit Length: ${this._simulatorSettingsViewModel.getTransmissionLineResistance()} ohms\nConductance Per Unit Length: ${this._simulatorSettingsViewModel.getTransmissionLineConductance()}S\nInductance Per Unit Length: ${this._simulatorSettingsViewModel.getTransmissionLineInductance()}H\nCapacitance Per Unit Length: ${this._simulatorSettingsViewModel.getTransmissionLineCapacitance()}F\nSegments: ${this._simulatorSettingsViewModel.getTransmissionLineSegments()}`;
     }
 }

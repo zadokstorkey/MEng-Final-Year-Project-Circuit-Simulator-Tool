@@ -40,10 +40,13 @@ export class SVGStartInductorComponent extends UIElement<SVGGElement> implements
         let inductance = this._simulatorSettingsViewModel.getStartTerminatingInductance();
         let newInductanceString = prompt(`Set inductance:\n(previous value was ${inductance} ohms)`);
         let newInductance = parseFloat(newInductanceString!);
+        if (isNaN(newInductance)) {
+            return;
+        }
         this._simulatorSettingsViewModel.setStartTerminatingInductance(newInductance);
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getStartTerminatingInductance()}H (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Inductor (double-click to modify)\nInductance: ${this._simulatorSettingsViewModel.getStartTerminatingInductance()}H`;
     }
 }

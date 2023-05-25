@@ -40,10 +40,13 @@ export class SVGEndCapacitorComponent extends UIElement<SVGGElement> implements 
         let capacitance = this._simulatorSettingsViewModel.getEndTerminatingCapacitance();
         let newCapacitanceString = prompt(`Set capacitance:\n(previous value was ${capacitance}F)`);
         let newCapacitance = parseFloat(newCapacitanceString!);
+        if (isNaN(newCapacitance)) {
+            return;
+        }
         this._simulatorSettingsViewModel.setEndTerminatingCapacitance(newCapacitance);
     }
     
     private _handleSimulatorSettingsUpdated() {
-        this.innerElement.getElementsByTagName('title')[0].innerHTML = `${this._simulatorSettingsViewModel.getEndTerminatingCapacitance()} ohms (double-click to modify)`;
+        this.innerElement.getElementsByTagName('title')[0].innerHTML = `Capacitor (double-click to modify)\nCapacitance: ${this._simulatorSettingsViewModel.getEndTerminatingCapacitance()}F`;
     }
 }
