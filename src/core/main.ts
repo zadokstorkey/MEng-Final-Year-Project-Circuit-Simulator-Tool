@@ -66,6 +66,14 @@ async function run() {
     let selectPulseDrivingSubcircuitLayoutMenuButton = new SelectDrivingSubcircuitLayoutButton(selectPulseDrivingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'pulse', '--pulse-driving-subcircuit-visible', ['1', '0']);
     let selectSineDrivingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-driving-subcircuit-sine') as HTMLDivElement;
     let selectSineDrivingSubcircuitLayoutMenuButton = new SelectDrivingSubcircuitLayoutButton(selectSineDrivingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'sine', '--sine-driving-subcircuit-visible', ['1', '0']);
+    let selectClosedCircuitStartTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-start-terminating-subcircuit-closed-circuit') as HTMLDivElement;
+    let selectClosedCircuitStartTerminatingSubcircuitLayoutMenuButton = new SelectStartTerminatingSubcircuitLayoutButton(selectClosedCircuitStartTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'closed circuit', '--closed-circuit-terminating-subcircuit-visible', ['1', '0']);
+    let selectResistorStartTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-start-terminating-subcircuit-resistor') as HTMLDivElement;
+    let selectResistorStartTerminatingSubcircuitLayoutMenuButton = new SelectStartTerminatingSubcircuitLayoutButton(selectResistorStartTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'resistor', '--resistor-terminating-subcircuit-visible', ['1', '0']);
+    let selectCapacitorStartTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-start-terminating-subcircuit-capacitor') as HTMLDivElement;
+    let selectCapacitorStartTerminatingSubcircuitLayoutMenuButton = new SelectStartTerminatingSubcircuitLayoutButton(selectCapacitorStartTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'capacitor', '--capacitor-terminating-subcircuit-visible', ['1', '0']);
+    let selectInductorStartTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-start-terminating-subcircuit-inductor') as HTMLDivElement;
+    let selectInductorStartTerminatingSubcircuitLayoutMenuButton = new SelectStartTerminatingSubcircuitLayoutButton(selectInductorStartTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'inductor', '--inductor-terminating-subcircuit-visible', ['1', '0']);
     let selectOpenCircuitTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-open-circuit') as HTMLDivElement;
     let selectOpenCircuitTerminatingSubcircuitLayoutMenuButton = new SelectTerminatingSubcircuitLayoutButton(selectOpenCircuitTerminatingSubcircuitLayoutMenuButtonElement, simulatorSettingsViewModel, 'open circuit', '--open-circuit-terminating-subcircuit-visible', ['1', '0']);
     let selectClosedCircuitTerminatingSubcircuitLayoutMenuButtonElement = document.getElementById('circuit-layout-sub-menu-item-terminating-subcircuit-closed-circuit') as HTMLDivElement;
@@ -183,7 +191,7 @@ async function run() {
             let currents = simulator.getCurrents().map(c => c);
 
             numberArrayDataSourceVoltageSpace.setArrayData(voltages);
-            numberArrayDataSourceCurrentSpace.setArrayData(currents);
+            //numberArrayDataSourceCurrentSpace.setArrayData(currents);
 
             startVoltages.pop();
             startVoltages.unshift(voltages[0]);
@@ -195,8 +203,8 @@ async function run() {
             endCurrents.unshift(currents[currents.length - 1]);
             numberArrayDataSourceVoltageTime1.setArrayData(startVoltages);
             numberArrayDataSourceVoltageTime2.setArrayData(endVoltages);
-            numberArrayDataSourceCurrentTime1.setArrayData(startCurrents);
-            numberArrayDataSourceCurrentTime2.setArrayData(endCurrents);
+            //numberArrayDataSourceCurrentTime1.setArrayData(startCurrents);
+            //numberArrayDataSourceCurrentTime2.setArrayData(endCurrents);
         }
     }
 }
